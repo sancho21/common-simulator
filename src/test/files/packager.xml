@@ -1,0 +1,6 @@
+<packager>
+	<field name="ACC" index="0" length="4" description="Account Number"
+		leftAligned="true" filler=" " validationRegex="" />
+	<field name="AMOUNT" index="4" length="10" description="Balance"
+		leftAligned="false" filler="0" validationRegex="" />
+</packager>

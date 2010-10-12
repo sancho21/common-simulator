@@ -1,0 +1,1 @@
+This library is released under LGPL v2 License. For Apache v2 License, please contact ichsan@gmail.com
