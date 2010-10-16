@@ -1,5 +1,6 @@
 package id.web.michsan.csimulator.process;
 
+import static id.web.michsan.csimulator.util.StringHelper.q;
 import id.web.michsan.csimulator.RequestTemplate;
 import id.web.michsan.csimulator.Resolver;
 import id.web.michsan.csimulator.ResponseTemplate;
@@ -16,12 +17,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  *
  * @author Muhammad Ichsan (ichsan@gmail.com)
  *
  */
 public class BaseProcessor implements Processor {
+	private static final transient Logger LOGGER = LoggerFactory.getLogger(BaseProcessor.class);
+
 	private DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm:ss");
 	private Resolver resolver;
 	private static Class<? extends Resolver> resolverClass;
@@ -46,12 +52,13 @@ public class BaseProcessor implements Processor {
 				}
 
 				Map<String, String> responseFields = template.createResponse(incomingMessageFields);
-				responseSender.send(responseFields);
+				if (!responseFields.isEmpty()) {
+					responseSender.send(responseFields);
 
-				if (isVerbose) {
-					replySent(responseFields);
+					if (isVerbose) {
+						replySent(responseFields);
+					}
 				}
-
 				return;
 			}
 		}
@@ -82,7 +89,8 @@ public class BaseProcessor implements Processor {
 			String receiveDate, ResponseTemplate template) {
 		System.out.println("Received on " + receiveDate + ":");
 		System.out.println(viewOrderedContents(fields));
-		System.out.println("Match to rule: " + template.getCode());
+		System.out.println("Match to rule: " +
+				(template.getName() != null ? template.getName() : template.getCode()));
 	}
 
 	protected void replySent(Map<String, String> responseFields) {
@@ -103,8 +111,24 @@ public class BaseProcessor implements Processor {
 
 	@Override
 	public void processRequest(RequestTemplate template, Sender requestSender) {
+		LOGGER.debug("Sending template " + readNameOrCode(template));
 		template.setResolver(loadResolver());
-		requestSender.send(template.render());
+
+		Map<String, String> rendered = template.render();
+
+		if (isVerbose(template)) {
+			requestSent(readNameOrCode(template), rendered);
+		}
+		requestSender.send(rendered);
+	}
+
+	protected void requestSent(String name, Map<String, String> rendered) {
+		System.out.println("Sending " + q(name) + " on " + dateFormat.format(new Date()));
+		System.out.println(viewOrderedContents(rendered));
+	}
+
+	private String readNameOrCode(RequestTemplate template) {
+		return template.getName() != null ? template.getName() : template.getCode();
 	}
 
 	public Resolver loadResolver() {
@@ -127,12 +151,14 @@ public class BaseProcessor implements Processor {
 			InputStream in =
 				ClassLoader.getSystemClassLoader().getResourceAsStream("resolver.properties");
 			props.load(in);
+			LOGGER.debug("resolver.properties is found");
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 		String resolverClassName = props.getProperty("class");
 		try {
 			resolverClass = Class.forName(resolverClassName).asSubclass(Resolver.class);
+			LOGGER.info("Resolver " + resolverClassName + " is loaded");
 		} catch (ClassNotFoundException e) {
 			throw new RuntimeException(e);
 		}

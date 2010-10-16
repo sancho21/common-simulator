@@ -4,3 +4,5 @@ Features:
 	- Response template can work with <echo> and <echo partial>
 	- Request template with <counter> and <date:format>
     - Response can be delayed
+
+To override value resolver, please override id.web.michsan.csimulator.Resolver and register it inside resolver.properties in your path.
