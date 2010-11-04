@@ -16,10 +16,24 @@
 				<include>LICENSE.txt</include>
 			</includes>
 		</fileSet>
+		<fileSet>
+			<directory>${project.basedir}/target/site/apidocs</directory>
+			<outputDirectory>/apidocs</outputDirectory>
+		</fileSet>
 	</fileSets>
 	<dependencySets>
 		<dependencySet>
 			<outputDirectory>/</outputDirectory>
+			<includes>
+				<include>id.web.michsan:common-simulator</include>
+			</includes>
+			<scope>runtime</scope>
+		</dependencySet>
+		<dependencySet>
+			<outputDirectory>/dependencies</outputDirectory>
+			<excludes>
+				<exclude>id.web.michsan:common-simulator</exclude>
+			</excludes>
 			<scope>runtime</scope>
 		</dependencySet>
 	</dependencySets>

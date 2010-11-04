@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 /**
  * Template for response which also can compose response message
  * @author Muhammad Ichsan (ichsan@gmail.com)
- *
+ * @since 1.0.1
  */
 public class ResponseTemplate implements Template {
 	private static final Pattern PRIVATE_ECHO_PATTERN = Pattern.compile("<echo\\|([0-9]+|\\*),[0-9]+>");

@@ -9,9 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
+ * Default resolver which can handle &lt;date:HHmmss&gt;, &lt;counter&gt;
  * @author Muhammad Ichsan (ichsan@gmail.com)
- *
+ * @since 1.0.1
  */
 public class DefaultResolver implements Resolver {
 	private static final transient Logger LOGGER = LoggerFactory.getLogger(DefaultResolver.class);

@@ -5,7 +5,7 @@
 	<artifactId>common-simulator</artifactId>
 	<version>1.0.2-BETA</version>
 	<name>Common Simulator</name>
-	<description>Simulator which simulates remote peers which use ISO-8583 protocol</description>
+	<description>Simulator library which simulates remote peers e.g. using ISO-8583 protocol</description>
 	<url>http://michsan.web.id/simulator</url>
 
 	<properties>
@@ -54,7 +54,7 @@
 	<build>
 		<defaultGoal>package</defaultGoal>
 		<plugins>
-			<!-- configure compiler to use JDK 1.6 language features -->
+			<!-- To configure compiler to use JDK 1.6 language features -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -65,6 +65,30 @@
 					<target>1.6</target>
 				</configuration>
 			</plugin>
+			<!-- To add doc into binary release -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.7</version>
+				<configuration>
+					<show>protected</show>
+					<detectLinks>true</detectLinks>
+					<stylesheet>maven</stylesheet>
+					<links>
+						<link>http://download.oracle.com/javase/6/docs/api</link>
+					</links>
+				</configuration>
+				<executions>
+					<execution>
+						<id>javadoc</id>
+						<phase>package</phase>
+						<goals>
+							<goal>javadoc</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- To configure build to create binary release -->
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>2.2</version>

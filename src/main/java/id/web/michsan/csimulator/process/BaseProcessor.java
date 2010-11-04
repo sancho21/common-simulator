@@ -21,9 +21,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
+ * Basic implementation of a Processor
  * @author Muhammad Ichsan (ichsan@gmail.com)
- *
+ * @since 1.0.1
  */
 public class BaseProcessor implements Processor {
 	private static final transient Logger LOGGER = LoggerFactory.getLogger(BaseProcessor.class);
@@ -36,7 +36,7 @@ public class BaseProcessor implements Processor {
 	public void process(Map<String, String> incomingMessageFields, List<ResponseTemplate> templates,
 			Sender responseSender) {
 
-		String receiveDate = dateFormat.format(new Date());
+		Date receiveDate = new Date();
 		for (ResponseTemplate template : templates) {
 
 			if (template.match(incomingMessageFields)) {
@@ -79,20 +79,40 @@ public class BaseProcessor implements Processor {
 		return isVerbose;
 	}
 
-	protected void unmatchedMessageReceived(Map<String, String> fields,
-			String receiveDate) {
-		System.out.println("Received on " + receiveDate + ":");
-		System.out.println(viewOrderedContents(fields));
+	/**
+	 * This is called when an unmatched message has come. Current implementation
+	 * only prints when the message come and what are its field contents.
+	 * @param requestFields Fields of the request message
+	 * @param receiveDate Date when the message is received
+	 */
+	protected void unmatchedMessageReceived(Map<String, String> requestFields,
+			Date receiveDate) {
+		System.out.println("Received on " + dateFormat.format(receiveDate) + ":");
+		System.out.println(viewOrderedContents(requestFields));
 	}
 
-	protected void matchedMessageReceived(Map<String, String> fields,
-			String receiveDate, ResponseTemplate template) {
-		System.out.println("Received on " + receiveDate + ":");
-		System.out.println(viewOrderedContents(fields));
+	/**
+	 * This is called when a matched message is received. Current implementation
+	 * only prints when the message come, what are its field contents and also
+	 * the rule which matches.
+	 * @param requestFields Fields of the request message
+	 * @param receiveDate Date when the message is received
+	 * @param template Response template which matches
+	 */
+	protected void matchedMessageReceived(Map<String, String> requestFields,
+			Date receiveDate, ResponseTemplate template) {
+		System.out.println("Received on " + dateFormat.format(receiveDate) + ":");
+		System.out.println(viewOrderedContents(requestFields));
 		System.out.println("Match to rule: " +
 				(template.getName() != null ? template.getName() : template.getCode()));
 	}
 
+	/**
+	 * This is called when a response message is sent back to the requester.
+	 * Current implementation only prints when the message is sent and what are
+	 * its field contents.
+	 * @param responseFields Fields of the response message
+	 */
 	protected void replySent(Map<String, String> responseFields) {
 		String replyDate = dateFormat.format(new Date());
 		System.out.println("Replied on " + replyDate + ":");
@@ -122,9 +142,15 @@ public class BaseProcessor implements Processor {
 		requestSender.send(rendered);
 	}
 
-	protected void requestSent(String name, Map<String, String> rendered) {
-		System.out.println("Sending " + q(name) + " on " + dateFormat.format(new Date()));
-		System.out.println(viewOrderedContents(rendered));
+	/**
+	 * This is called when a request message is rendered. This is only for
+	 *  information reason.
+	 * @param ruleName Rule name the request message belongs to
+	 * @param requestFields Rendered request fields
+	 */
+	protected void requestSent(String ruleName, Map<String, String> requestFields) {
+		System.out.println("Sending " + q(ruleName) + " on " + dateFormat.format(new Date()));
+		System.out.println(viewOrderedContents(requestFields));
 	}
 
 	private String readNameOrCode(RequestTemplate template) {

@@ -10,7 +10,7 @@ import java.util.Properties;
 /**
  * Request template
  * @author Muhammad Ichsan (ichsan@gmail.com)
- *
+ * @since 1.0.1
  */
 public class RequestTemplate implements Template {
 	private final String code;
@@ -28,6 +28,37 @@ public class RequestTemplate implements Template {
 		this.code = code;
 		this.name = name;
 		this.fields = fields;
+	}
+
+	/**
+	 * Render this template into real message
+	 * @return Rendered message fields
+	 */
+	public Map<String, String> render() {
+		HashMap<String, String> rendered = new HashMap<String, String>();
+
+		for (Entry<String, String> entry : fields.entrySet()) {
+			String field = entry.getKey();
+			String value = resolver.resolve(entry.getValue());
+			rendered.put(field, value);
+		}
+
+		return rendered;
+	}
+
+	public static List<RequestTemplate> convert(List<Template> templates) {
+		List<RequestTemplate> list = new ArrayList<RequestTemplate>();
+
+		for (Template template : templates) {
+			list.add(new RequestTemplate(template));
+		}
+		return list;
+	}
+
+	/* Accessors **************************************************************/
+
+	public void setResolver(Resolver resolver) {
+		this.resolver = resolver;
 	}
 
 	@Override
@@ -53,30 +84,4 @@ public class RequestTemplate implements Template {
 	public Map<String, String> getFields() {
 		return fields;
 	}
-
-	public Map<String, String> render() {
-		HashMap<String, String> rendered = new HashMap<String, String>();
-
-		for (Entry<String, String> entry : fields.entrySet()) {
-			String field = entry.getKey();
-			String value = resolver.resolve(entry.getValue());
-			rendered.put(field, value);
-		}
-
-		return rendered;
-	}
-
-	public static List<RequestTemplate> convert(List<Template> templates) {
-		List<RequestTemplate> list = new ArrayList<RequestTemplate>();
-
-		for (Template template : templates) {
-			list.add(new RequestTemplate(template));
-		}
-		return list;
-	}
-
-	public void setResolver(Resolver resolver) {
-		this.resolver = resolver;
-	}
-
 }

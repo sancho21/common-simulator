@@ -13,7 +13,7 @@ import java.util.Properties;
 /**
  * Load templates from properties file. The important keys are rule_names
  * @author Muhammad Ichsan (ichsan@gmail.com)
- *
+ * @since 1.0.1
  */
 public class TemplateLoader {
 
