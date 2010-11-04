@@ -26,7 +26,6 @@ import org.xml.sax.SAXException;
 /**
  * Packager composes fields into a long string
  * @author Muhammad Ichsan (ichsan@gmail.com)
- * @version 1.0.0, 10/02/10
  * @since 1.0.0
  */
 public class Packager {

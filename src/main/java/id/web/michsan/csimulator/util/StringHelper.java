@@ -1,9 +1,9 @@
 package id.web.michsan.csimulator.util;
 
 /**
- *
+ * Helper for string related things
  * @author Muhammad Ichsan (ichsan@gmail.com)
- *
+ * @since 1.0.0
  */
 public class StringHelper {
 

@@ -11,7 +11,6 @@ import java.util.Map;
 /**
  * To view object in string representation
  * @author Muhammad Ichsan (ichsan@gmail.com)
- * @version 1.0.0, 10/02/10
  * @since 1.0.0
  */
 public class ObjectViewer {
