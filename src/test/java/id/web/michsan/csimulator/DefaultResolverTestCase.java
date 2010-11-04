@@ -4,6 +4,11 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+/**
+*
+* @author Muhammad Ichsan (ichsan@gmail.com)
+*
+*/
 public class DefaultResolverTestCase {
 
 	@Test

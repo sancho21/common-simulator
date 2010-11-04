@@ -37,8 +37,8 @@ public class Packager {
 	/**
 	 * Constructor
 	 * @param code Packager unique code
-	 * @param fields It's fields
-	 * @throws RuntimeException If fields is overlapping
+	 * @param fields Packager's fields
+	 * @throws RuntimeException If fields is overlapping with each other
 	 */
 	public Packager(String code, List<Field> fields) throws RuntimeException {
 		this.code = code;
@@ -94,8 +94,9 @@ public class Packager {
 	}
 
 	/**
-	 * Pack message residing in value holder
-	 * @param valueHolder
+	 * Pack message which values are residing in a value holder. Values which are
+	 * not registered in the packager fields will be ignored.
+	 * @param valueHolder A holder which contains key-to-value list
 	 * @return Packed message
 	 */
 	public String pack(Map<String, String> valueHolder) {
@@ -122,8 +123,11 @@ public class Packager {
 		StringBuffer buffer = new StringBuffer();
 
 		for (Field field : sortedFields) {
+			String value = fieldValues.get(field);
+			if (value == null) value = "";
+
 			buffer.append(StringHelper.pad(
-					fieldValues.get(field), field.getLength(),
+					value, field.getLength(),
 					field.isLeftAligned(), field.getFiller()));
 		}
 

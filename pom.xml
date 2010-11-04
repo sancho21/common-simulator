@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>id.web.michsan</groupId>
 	<artifactId>common-simulator</artifactId>
-	<version>1.0.1-BETA</version>
+	<version>1.0.2-BETA</version>
 	<name>Common Simulator</name>
 	<description>Simulator which simulates remote peers which use ISO-8583 protocol</description>
 	<url>http://michsan.web.id/simulator</url>
@@ -11,7 +11,7 @@
 	<properties>
 		<slf4j.version>1.5.6</slf4j.version>
 		<log4j.version>1.2.16</log4j.version>
-		<junit.version>4.8</junit.version>
+		<junit.version>4.8.2</junit.version>
 		<easymock.version>3.0</easymock.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
