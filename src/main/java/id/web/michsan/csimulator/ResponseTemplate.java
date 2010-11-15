@@ -1,11 +1,12 @@
 package id.web.michsan.csimulator;
 
+import id.web.michsan.csimulator.util.ConditionChecker;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -43,22 +44,7 @@ public class ResponseTemplate implements Template {
 	 * @return result
 	 */
 	public boolean match(Map<String, String> fields) {
-		boolean match = true;
-
-		StringTokenizer tokenizer = new StringTokenizer(condition, "&&");
-		while (match && tokenizer.hasMoreTokens()) {
-			String[] splits = tokenizer.nextToken().split(":");
-			String field = splits[0].trim();
-			String value = splits[1].trim();
-
-			String requestValue = fields.get(field);
-			if (requestValue != null)
-				match = match && requestValue.equals(value);
-			else
-				match = false;
-		}
-
-		return match;
+		return ConditionChecker.match(condition, fields);
 	}
 
 	/**

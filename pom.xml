@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>id.web.michsan</groupId>
 	<artifactId>common-simulator</artifactId>
-	<version>1.0.2-BETA</version>
+	<version>1.0.3-BETA</version>
 	<name>Common Simulator</name>
 	<description>Simulator library which simulates remote peers e.g. using ISO-8583 protocol</description>
 	<url>http://michsan.web.id/simulator</url>
@@ -13,6 +13,7 @@
 		<log4j.version>1.2.16</log4j.version>
 		<junit.version>4.8.2</junit.version>
 		<easymock.version>3.0</easymock.version>
+		<antlr.version>3.2</antlr.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -48,6 +49,13 @@
 			<version>${easymock.version}</version>
 			<type>jar</type>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.antlr</groupId>
+			<artifactId>antlr-runtime</artifactId>
+			<version>${antlr.version}</version>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 
@@ -107,7 +115,19 @@
 					</execution>
 				</executions>
 			</plugin>
-			
+			<!-- To compile Antlr file -->
+			<plugin>
+				<groupId>org.antlr</groupId>
+				<artifactId>antlr3-maven-plugin</artifactId>
+				<version>${antlr.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>antlr</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 </project>
