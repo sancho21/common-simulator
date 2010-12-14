@@ -1,5 +1,6 @@
 package id.web.michsan.csimulator;
 
+import static id.web.michsan.csimulator.util.StringHelper.pad;
 import id.web.michsan.csimulator.util.ConditionChecker;
 
 import java.util.ArrayList;
@@ -103,7 +104,8 @@ public class ResponseTemplate implements Template {
 				sourceBegin = Integer.parseInt(split[0]);
 			}
 
-			String replacement = requestFields.get(field).substring(sourceBegin, sourceBegin + textLength);
+			String replacement = pad(requestFields.get(field), sourceBegin + textLength)
+			.substring(sourceBegin, sourceBegin + textLength);
 			m.appendReplacement(sb, replacement);
 
 			totalLastEchoLength += echoPart.length();

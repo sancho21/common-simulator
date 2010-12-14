@@ -134,4 +134,22 @@ public class ResponseTemplateTestCase {
 
 		assertEquals("KTP9999905000REFYabcREFY", responseFields.get("61"));
 	}
+
+	@Test
+	public void shouldPadRequestedFieldBeforeEcho() {
+		// Given
+		Map<String, String> templateFields = new HashMap<String, String>();
+		templateFields.put("48", "<echo|*,10>Jakarta");
+		ResponseTemplate template =
+			new ResponseTemplate("aRule", "Desc", templateFields, "unsed");
+
+		Map<String, String> requestFields = new HashMap<String, String>();
+		requestFields.put("48", "Jack");
+
+		// When
+		Map<String, String> responseFields = template.createResponse(requestFields);
+
+		// Then
+		assertEquals("Jack      Jakarta", responseFields.get("48"));
+	}
 }
