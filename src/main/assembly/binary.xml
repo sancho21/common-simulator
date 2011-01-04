@@ -12,8 +12,7 @@
 			<directory>${project.basedir}</directory>
 			<outputDirectory>/</outputDirectory>
 			<includes>
-				<include>README.txt</include>
-				<include>LICENSE.txt</include>
+				<include>*.txt</include>
 			</includes>
 		</fileSet>
 		<fileSet>

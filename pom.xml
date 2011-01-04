@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>id.web.michsan</groupId>
 	<artifactId>common-simulator</artifactId>
-	<version>1.0.3-RC1</version>
+	<version>1.0.3-RC2</version>
 	<name>Common Simulator</name>
 	<description>Simulator library which simulates remote peers e.g. using ISO-8583 protocol</description>
 	<url>http://michsan.web.id/simulator</url>
@@ -82,6 +82,7 @@
 					<show>protected</show>
 					<detectLinks>true</detectLinks>
 					<stylesheet>maven</stylesheet>
+					<excludePackageNames>id.web.michsan.csimulator.util.grammar.*</excludePackageNames>
 					<links>
 						<link>http://download.oracle.com/javase/6/docs/api</link>
 					</links>

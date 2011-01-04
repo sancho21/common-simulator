@@ -5,7 +5,7 @@ grammar Condition;
 
 /* Not important. But it defines namespace for the parser */
 @header {
-    package id.web.michsan.csimulator.util;
+    package id.web.michsan.csimulator.util.grammar;
     
     import java.util.HashMap;
 	import java.util.Map;
@@ -13,7 +13,7 @@ grammar Condition;
 
 /* Not important. But it defines namespace for the lexer */
 @lexer::header {
-	package id.web.michsan.csimulator.util;
+	package id.web.michsan.csimulator.util.grammar;
 }
 
 /* Methods the parser may has */
