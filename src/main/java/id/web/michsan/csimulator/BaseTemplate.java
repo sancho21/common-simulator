@@ -15,6 +15,12 @@ public class BaseTemplate implements Template {
 	private Properties properties = new Properties(); // Other properties
 	private String name;
 
+	/**
+	 * Create a base template
+	 * @param code Unique identifier of the template which has no empty chars.
+	 * The value should simple; e.g. bill_payment
+	 * @param fields List of pairs of field name and value
+	 */
 	public BaseTemplate(String code, Map<String, String> fields) {
 		this.code = code;
 		this.fields = Collections.unmodifiableMap(fields);
@@ -35,6 +41,10 @@ public class BaseTemplate implements Template {
 		return properties;
 	}
 
+	/**
+	 * Set properties that apply to this template; e.g. response_delay
+	 * @param properties Properties to set
+	 */
 	public void setProperties(Properties properties) {
 		this.properties = properties;
 	}
@@ -44,6 +54,10 @@ public class BaseTemplate implements Template {
 		return name;
 	}
 
+	/**
+	 * Set a human friendly name to this template; e.g. Bill Payment
+	 * @param name Human friendly name of the template
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}

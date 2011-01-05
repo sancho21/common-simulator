@@ -27,8 +27,6 @@ public class BaseProcessor_process_TestCase {
 
 	private Sender responseSender;
 
-
-
 	@Before
 	public void before() {
 		baseProcessor = new BaseProcessor() {
@@ -113,15 +111,17 @@ public class BaseProcessor_process_TestCase {
 	}
 
 	@Test
-	public void shouldDelay() {
-		// Given a template with specified delay
+	public void shouldFollowGlobalDelayRule() {
+		// Given processor has response delay set
+		baseProcessor.setResponseDelay(200);
+
+		// And a template
 		List<ResponseTemplate> templates = new ArrayList<ResponseTemplate>();
 
 		Map<String, String> fields = new HashMap<String, String>();
 		fields.put("fieldOne", "Halo");
 		fields.put("fieldTwo", "<echo>");
 		ResponseTemplate template = new ResponseTemplate("c1", "n1", fields, "fieldOne:Hello");
-		template.getProperties().setProperty("response_delay", "300");
 		templates.add(template);
 
 		// When this matched message comes
@@ -131,6 +131,33 @@ public class BaseProcessor_process_TestCase {
 		baseProcessor.process(incomingMessageFields, templates, responseSender);
 
 		// Then we expect the delay is correct
-		assertTrue(replyDate.getTime() - receiveDate.getTime() > 200);
+		assertTrue(replyDate.getTime() - receiveDate.getTime() > 100);
 	}
+
+	@Test
+	public void shouldFollowOverridenDelayRule() {
+		// Given processor has response delay set
+		baseProcessor.setResponseDelay(200);
+
+		// And a template with specified delay
+		List<ResponseTemplate> templates = new ArrayList<ResponseTemplate>();
+
+		Map<String, String> fields = new HashMap<String, String>();
+		fields.put("fieldOne", "Halo");
+		fields.put("fieldTwo", "<echo>");
+		ResponseTemplate template = new ResponseTemplate("c1", "n1", fields, "fieldOne:Hello");
+		template.getProperties().setProperty("response_delay", "400"); // This overrides global delay
+		templates.add(template);
+
+		// When this matched message comes
+		Map<String, String> incomingMessageFields = new HashMap<String, String>();
+		incomingMessageFields.put("fieldOne", "Hello");
+
+		baseProcessor.process(incomingMessageFields, templates, responseSender);
+
+		// Then we expect the delay is correct
+		assertTrue(replyDate.getTime() - receiveDate.getTime() > 300);
+	}
+
+
 }

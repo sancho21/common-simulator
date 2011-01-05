@@ -28,7 +28,8 @@ import org.slf4j.LoggerFactory;
 public class BaseProcessor implements Processor {
 	private static final transient Logger LOGGER = LoggerFactory.getLogger(BaseProcessor.class);
 
-	private DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm:ss");
+	private DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm:ss.SSS");
+	private long responseDelay;
 	private Resolver resolver;
 	private static Class<? extends Resolver> resolverClass;
 
@@ -46,10 +47,7 @@ public class BaseProcessor implements Processor {
 					matchedMessageReceived(incomingMessageFields, receiveDate, template);
 				}
 
-				String delayStr = template.getProperties().getProperty("response_delay");
-				if (delayStr != null) {
-					sleepFor(Long.parseLong(delayStr));
-				}
+				delayIfNecessary(template);
 
 				Map<String, String> responseFields = template.createResponse(incomingMessageFields);
 				if (!responseFields.isEmpty()) {
@@ -64,6 +62,17 @@ public class BaseProcessor implements Processor {
 		}
 
 		unmatchedMessageReceived(incomingMessageFields, receiveDate);
+	}
+
+	private void delayIfNecessary(ResponseTemplate template) {
+		long responseDelay = this.responseDelay;
+		String delayStr = template.getProperties().getProperty("response_delay");
+
+		if (delayStr != null)
+			responseDelay = Long.parseLong(delayStr);
+
+		if (responseDelay != 0)
+			sleepFor(responseDelay);
 	}
 
 	private void sleepFor(long length) {
@@ -194,5 +203,9 @@ public class BaseProcessor implements Processor {
 
 	public void setDateFormat(DateFormat dateFormat) {
 		this.dateFormat = dateFormat;
+	}
+
+	public void setResponseDelay(long responseDelay) {
+		this.responseDelay = responseDelay;
 	}
 }
