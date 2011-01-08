@@ -1,5 +1,8 @@
 package id.web.michsan.csimulator;
 
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -7,6 +10,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -15,6 +19,18 @@ import org.junit.Test;
  *
  */
 public class ResponseTemplateTestCase {
+	private Resolver resolver;
+
+	@Before
+	public void before() {
+		resolver = new Resolver() {
+
+			public String resolve(String value) {
+				return value;
+			}
+		};
+	}
+
 	@Test
 	public void shouldMatch() {
 		// Given
@@ -46,6 +62,7 @@ public class ResponseTemplateTestCase {
 		templateFields.put("32", "Pasti Ini");
 		ResponseTemplate template =
 			new ResponseTemplate("aRule", "Desc", templateFields, "unsed");
+		template.setResolver(resolver);
 
 		Map<String, String> requestFields = new HashMap<String, String>();
 		requestFields.put("32", "Suka2");
@@ -70,6 +87,7 @@ public class ResponseTemplateTestCase {
 		templateFields.put("32", "<echo>");
 		ResponseTemplate template =
 			new ResponseTemplate("aRule", "Desc", templateFields, "unsed");
+		template.setResolver(resolver);
 
 		Map<String, String> requestFields = new HashMap<String, String>();
 		requestFields.put("32", "Halo Bandung");
@@ -94,6 +112,7 @@ public class ResponseTemplateTestCase {
 		templateFields.put("48", "1234567890<echo|*,10>Jakarta        <echo|*,3>Cool");
 		ResponseTemplate template =
 			new ResponseTemplate("aRule", "Desc", templateFields, "unsed");
+		template.setResolver(resolver);
 
 		Map<String, String> requestFields = new HashMap<String, String>();
 		requestFields.put("48", "0000000000Sancho21  Jakarta        XXDWonderful");
@@ -118,6 +137,7 @@ public class ResponseTemplateTestCase {
 		templateFields.put("61", "KTP9999905000<echo|8,4>abc<echo|8,4>");
 		ResponseTemplate template =
 			new ResponseTemplate("aRule", "Desc", templateFields, "unsed");
+		template.setResolver(resolver);
 
 		Map<String, String> requestFields = new HashMap<String, String>();
 		requestFields.put("61", "KTP99999REFX");
@@ -142,6 +162,7 @@ public class ResponseTemplateTestCase {
 		templateFields.put("48", "<echo|*,10>Jakarta");
 		ResponseTemplate template =
 			new ResponseTemplate("aRule", "Desc", templateFields, "unsed");
+		template.setResolver(resolver);
 
 		Map<String, String> requestFields = new HashMap<String, String>();
 		requestFields.put("48", "Jack");
@@ -151,5 +172,30 @@ public class ResponseTemplateTestCase {
 
 		// Then
 		assertEquals("Jack      Jakarta", responseFields.get("48"));
+	}
+
+	public void shouldUseResolver() {
+		// Given a template
+		Map<String, String> templateFields = new HashMap<String, String>();
+		templateFields.put("31", "Three One");
+		templateFields.put("32", "<a-trick>");
+		ResponseTemplate template =
+			new ResponseTemplate("aRule", "Desc", templateFields, "unsed");
+
+		// And expectation that the resolver react to the value
+		resolver = createMock(Resolver.class);
+		template.setResolver(resolver);
+		expect(resolver.resolve("<a-trick>")).andReturn("Wonderful trick!");
+		replay(resolver);
+
+		Map<String, String> requestFields = new HashMap<String, String>();
+		requestFields.put("32", "Suka2");
+
+		// When we create a response
+		Map<String, String> responseFields = template.createResponse(requestFields);
+
+		// Then
+		assertEquals("Three One", responseFields.get("31"));
+		assertEquals("Wonderful trick!", responseFields.get("32"));
 	}
 }

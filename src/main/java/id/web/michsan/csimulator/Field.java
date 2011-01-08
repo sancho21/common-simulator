@@ -76,7 +76,6 @@ public class Field implements Comparable<Field> {
 				+ ", validationRegex=" + validationRegex + "]";
 	}
 
-	@Override
 	public int compareTo(Field other) {
 		return new Integer(index).compareTo(other.index);
 	}

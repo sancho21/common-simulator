@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>id.web.michsan</groupId>
 	<artifactId>common-simulator</artifactId>
-	<version>1.0.3-GA</version>
+	<version>1.1.3-SNAPSHOT</version>
 	<name>Common Simulator</name>
 	<description>Simulator library which simulates remote peers e.g. using ISO-8583 protocol</description>
 	<url>http://michsan.web.id/simulator</url>
@@ -69,8 +69,8 @@
 				<version>2.3.2</version>
 				<configuration>
 					<encoding>${project.build.sourceEncoding}</encoding>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.5</source>
+					<target>1.5</target>
 				</configuration>
 			</plugin>
 			<!-- To add doc into binary release -->

@@ -18,7 +18,6 @@ public class DefaultResolver implements Resolver {
 
 	private int counter;
 
-	@Override
 	public String resolve(String value) {
 		String result = value;
 

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,6 +24,7 @@ public class ResponseTemplate implements Template {
 	private final Map<String, String> fields;
 	private Properties properties = new Properties();
 	private final String name;
+	private Resolver resolver;
 
 	public ResponseTemplate(Template template) {
 		this(template.getCode(), template.getName(), template.getFields(),
@@ -54,13 +56,13 @@ public class ResponseTemplate implements Template {
 	 * @return Response fields
 	 */
 	public Map<String, String> createResponse(Map<String, String> requestFields) {
-		Map<String, String> response = new HashMap<String, String>();
-		response.putAll(fields);
+		Map<String, String> rendered = new HashMap<String, String>();
 
-		for (String field : response.keySet()) {
+		for (Entry<String, String> entry : fields.entrySet()) {
+			String field = entry.getKey();
+			String value = entry.getValue();
+
 			try {
-				String value = response.get(field);
-
 				if (value.equals("<echo>")) {
 					value = requestFields.get(field);
 				}
@@ -69,7 +71,11 @@ public class ResponseTemplate implements Template {
 					value = complexValueReplace(requestFields, field, value);
 				}
 
-				response.put(field, value);
+				else {
+					value = resolver.resolve(value);
+				}
+
+				rendered.put(field, value);
 
 			} catch (Exception e) {
 				throw new RuntimeException("Failed to create response for field: " + field, e);
@@ -77,7 +83,7 @@ public class ResponseTemplate implements Template {
 		}
 
 
-		return response;
+		return rendered;
 	}
 
 
@@ -120,22 +126,18 @@ public class ResponseTemplate implements Template {
 		return condition;
 	}
 
-	@Override
 	public String getCode() {
 		return code;
 	}
 
-	@Override
 	public String getName() {
 		return name;
 	}
 
-	@Override
 	public Map<String, String> getFields() {
 		return fields;
 	}
 
-	@Override
 	public Properties getProperties() {
 		return properties;
 	}
@@ -147,5 +149,9 @@ public class ResponseTemplate implements Template {
 			list.add(new ResponseTemplate(template));
 		}
 		return list;
+	}
+
+	public void setResolver(Resolver resolver) {
+		this.resolver = resolver;
 	}
 }

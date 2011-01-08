@@ -1,6 +1,7 @@
 package id.web.michsan.csimulator.process;
 
 import static id.web.michsan.csimulator.util.StringHelper.q;
+import id.web.michsan.csimulator.DefaultResolver;
 import id.web.michsan.csimulator.RequestTemplate;
 import id.web.michsan.csimulator.Resolver;
 import id.web.michsan.csimulator.ResponseTemplate;
@@ -33,7 +34,6 @@ public class BaseProcessor implements Processor {
 	private Resolver resolver;
 	private static Class<? extends Resolver> resolverClass;
 
-	@Override
 	public void process(Map<String, String> incomingMessageFields, List<ResponseTemplate> templates,
 			Sender responseSender) {
 
@@ -41,6 +41,7 @@ public class BaseProcessor implements Processor {
 		for (ResponseTemplate template : templates) {
 
 			if (template.match(incomingMessageFields)) {
+				template.setResolver(loadResolver());
 				boolean isVerbose = isVerbose(template);
 
 				if (isVerbose) {
@@ -131,14 +132,12 @@ public class BaseProcessor implements Processor {
 	protected String viewOrderedContents(Map<String, String> fields) {
 		return ObjectViewer.view(fields, new Comparator<String>() {
 
-			@Override
 			public int compare(String o1, String o2) {
 				return o1.compareTo(o2);
 			}
 		});
 	}
 
-	@Override
 	public void processRequest(RequestTemplate template, Sender requestSender) {
 		LOGGER.debug("Sending template " + readNameOrCode(template));
 		template.setResolver(loadResolver());
@@ -182,14 +181,28 @@ public class BaseProcessor implements Processor {
 
 	private static void loadClass() {
 		Properties props = new Properties();
+		InputStream in = null;
 		try {
-			InputStream in =
-				ClassLoader.getSystemClassLoader().getResourceAsStream("resolver.properties");
+			in = ClassLoader.getSystemClassLoader().getResourceAsStream("resolver.properties");
+			if (in == null) {
+				LOGGER.info("Failed to find resolver.properties. Using default resolver implementation.");
+				resolverClass = DefaultResolver.class;
+				return;
+			}
+
 			props.load(in);
 			LOGGER.debug("resolver.properties is found");
+
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new RuntimeException("Failed to load resolver.properties file.", e);
+
+		} finally {
+			if (in != null)
+				try {
+					in.close();
+				} catch (IOException e) {}
 		}
+
 		String resolverClassName = props.getProperty("class");
 		try {
 			resolverClass = Class.forName(resolverClassName).asSubclass(Resolver.class);

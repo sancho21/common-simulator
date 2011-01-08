@@ -17,6 +17,11 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ *
+ * @author Muhammad Ichsan (ichsan@gmail.com)
+ *
+ */
 public class BaseProcessor_process_TestCase {
 	private BaseProcessor baseProcessor;
 

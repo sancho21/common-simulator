@@ -26,17 +26,14 @@ public class BaseTemplate implements Template {
 		this.fields = Collections.unmodifiableMap(fields);
 	}
 
-	@Override
 	public Map<String, String> getFields() {
 		return fields;
 	}
 
-	@Override
 	public String getCode() {
 		return code;
 	}
 
-	@Override
 	public Properties getProperties() {
 		return properties;
 	}
@@ -49,7 +46,6 @@ public class BaseTemplate implements Template {
 		this.properties = properties;
 	}
 
-	@Override
 	public String getName() {
 		return name;
 	}

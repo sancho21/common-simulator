@@ -61,7 +61,6 @@ public class RequestTemplate implements Template {
 		this.resolver = resolver;
 	}
 
-	@Override
 	public Properties getProperties() {
 		return properties;
 	}
@@ -70,17 +69,14 @@ public class RequestTemplate implements Template {
 		this.properties = properties;
 	}
 
-	@Override
 	public String getCode() {
 		return code;
 	}
 
-	@Override
 	public String getName() {
 		return name;
 	}
 
-	@Override
 	public Map<String, String> getFields() {
 		return fields;
 	}
