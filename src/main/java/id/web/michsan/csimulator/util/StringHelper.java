@@ -1,11 +1,22 @@
 package id.web.michsan.csimulator.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Helper for string related things
  * @author Muhammad Ichsan (ichsan@gmail.com)
  * @since 1.0.0
  */
 public class StringHelper {
+
+	private static Map<Character, String> padders = new HashMap<Character, String>();
+	private static final int PADDER_LENGTH = 100;
+
+	static {
+		padders.put(' ', createPadder(' '));
+		padders.put('0', createPadder('0'));
+	}
 
 	public static String pad(int number, int length) {
 		return pad(String.valueOf(number), length, false, '0');
@@ -33,14 +44,14 @@ public class StringHelper {
 		// Chop into to the specified length
 		String padded = chop(object.toString(), length, isLeftAligned);
 
-		// Pad
-		if (isLeftAligned) {
-			for (int i = padded.length(); i < length; i++) padded = padded + filler;
-		} else {
-			for (int i = padded.length(); i < length; i++) padded = filler + padded;
-		}
+		if (padded.length() == length) return padded;
 
-		return padded;
+		String padder = loadPadder(filler);
+		while (padder.length() < length) padder = padder.concat(padder);
+
+		String fillingStr = padder.substring(0, length - padded.length());
+
+		return isLeftAligned ? padded.concat(fillingStr) : fillingStr.concat(padded);
 	}
 
 	public static String chop(String string, int length, boolean isLeftAligned) {
@@ -51,7 +62,7 @@ public class StringHelper {
 	}
 
 	// Created by Glo?
-	public static boolean isEmpty(String input, boolean trim){
+	public static boolean isEmpty(String input, boolean trim) {
 		if (input == null) return true;
 
 		if (trim) input = input.trim();
@@ -59,7 +70,23 @@ public class StringHelper {
 	}
 
 	public static String q(String value) {
-		return "'" + value + "'";
+		return "'".concat(value).concat("'");
+	}
+
+	private static String createPadder(char c) {
+		StringBuilder builder = new StringBuilder();
+		for (int i = PADDER_LENGTH; i > 0; i--) {
+			builder.append(c);
+		}
+		return builder.toString();
+	}
+
+	private static String loadPadder(char filler) {
+		if (padders.containsKey(filler)) return padders.get(filler);
+
+		String padder = createPadder(filler);
+		padders.put(filler, padder);
+		return padder;
 	}
 }
 

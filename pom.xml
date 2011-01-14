@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>id.web.michsan</groupId>
 	<artifactId>common-simulator</artifactId>
-	<version>1.1.0-SNAPSHOT</version>
+	<version>1.1.0-BETA</version>
 	<name>Common Simulator</name>
 	<description>Simulator library which simulates remote peers e.g. using ISO-8583 protocol</description>
 	<url>http://michsan.web.id/simulator</url>
@@ -62,7 +62,7 @@
 	<build>
 		<defaultGoal>package</defaultGoal>
 		<plugins>
-			<!-- To configure compiler to use JDK 1.6 language features -->
+			<!-- To configure compiler to use JDK 1.5 language features -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -71,6 +71,17 @@
 					<encoding>${project.build.sourceEncoding}</encoding>
 					<source>1.5</source>
 					<target>1.5</target>
+				</configuration>
+			</plugin>
+			<!-- Skip stresstest -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.7.1</version>
+				<configuration>
+					<excludes>
+						<exclude>**/*StressTest.java</exclude>
+					</excludes>
 				</configuration>
 			</plugin>
 			<!-- To add doc into binary release -->

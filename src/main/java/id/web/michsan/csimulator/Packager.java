@@ -119,7 +119,7 @@ public class Packager {
 	 * @return Rendered field values
 	 */
 	private String render(Map<Field, String> fieldValues) {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 
 		for (Field field : sortedFields) {
 			String value = fieldValues.get(field);
