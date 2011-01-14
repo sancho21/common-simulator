@@ -2,6 +2,11 @@ package id.web.michsan.csimulator.util;
 
 import org.junit.Test;
 
+/**
+ *
+ * @author Muhammad Ichsan (ichsan@gmail.com)
+ *
+ */
 public class StringHelperStressTest {
 
 	@Test

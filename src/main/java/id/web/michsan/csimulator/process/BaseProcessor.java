@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
 public class BaseProcessor implements Processor {
 	private static final transient Logger LOGGER = LoggerFactory.getLogger(BaseProcessor.class);
 
-	private DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm:ss.SSS");
+	private DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm:ss,SSS");
 	private long responseDelay;
 	private Resolver resolver;
 	private static Class<? extends Resolver> resolverClass;
@@ -139,7 +139,9 @@ public class BaseProcessor implements Processor {
 	}
 
 	public void processRequest(RequestTemplate template, Sender requestSender) {
-		LOGGER.debug("Sending template " + readNameOrCode(template));
+		if (LOGGER.isDebugEnabled())
+			LOGGER.debug("Sending template " + readNameOrCode(template));
+
 		template.setResolver(loadResolver());
 
 		Map<String, String> rendered = template.render();
@@ -185,13 +187,14 @@ public class BaseProcessor implements Processor {
 		try {
 			in = ClassLoader.getSystemClassLoader().getResourceAsStream("resolver.properties");
 			if (in == null) {
-				LOGGER.info("Failed to find resolver.properties. Using default resolver implementation.");
+				if (LOGGER.isInfoEnabled())
+					LOGGER.info("Failed to find resolver.properties. Using default resolver implementation.");
 				resolverClass = DefaultResolver.class;
 				return;
 			}
 
 			props.load(in);
-			LOGGER.debug("resolver.properties is found");
+			if (LOGGER.isDebugEnabled()) LOGGER.debug("resolver.properties is found");
 
 		} catch (IOException e) {
 			throw new RuntimeException("Failed to load resolver.properties file.", e);
@@ -206,7 +209,7 @@ public class BaseProcessor implements Processor {
 		String resolverClassName = props.getProperty("class");
 		try {
 			resolverClass = Class.forName(resolverClassName).asSubclass(Resolver.class);
-			LOGGER.info("Resolver " + resolverClassName + " is loaded");
+			if (LOGGER.isInfoEnabled()) LOGGER.info("Resolver " + resolverClassName + " is loaded");
 		} catch (ClassNotFoundException e) {
 			throw new RuntimeException(e);
 		}

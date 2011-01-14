@@ -3,9 +3,10 @@ package id.web.michsan.csimulator.util;
 import id.web.michsan.csimulator.Field;
 import id.web.michsan.csimulator.Packager;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -14,6 +15,7 @@ import java.util.Map;
  * @since 1.0.0
  */
 public class ObjectViewer {
+	private static final Map<String, String> EMPTY_MAP = Collections.emptyMap();
 
 	/**
 	 * View message (fields) based on its packager fields
@@ -22,17 +24,19 @@ public class ObjectViewer {
 	 * @return String representation
 	 */
 	public static String view(Map<String, String> message, Packager packager) {
-		String result = "[\n";
+		StringBuilder result = new StringBuilder();
+
+		result.append("[\n");
 		for (Field field : packager.getSortedFields()) {
 			String value = message.get(field.getName());
 			if (value == null) value = "";
 
-			result += field.getName() + " = '" +
-				value + "'\n";
+			result.append(field.getName()).append(" = '")
+				.append(value).append("'\n");
 		}
-		result += ']';
+		result.append(']');
 
-		return result;
+		return result.toString();
 	}
 
 	/**
@@ -44,7 +48,7 @@ public class ObjectViewer {
 	 */
 	public static String view(Map<String, String> message,
 			Comparator<String> comparator) {
-		return view(message, comparator, new HashMap<String, String>());
+		return view(message, comparator, EMPTY_MAP);
 	}
 
 	/**
@@ -58,10 +62,11 @@ public class ObjectViewer {
 	public static String view(Map<String, String> message,
 			Comparator<String> comparator,
 			Map<String, String> fieldNameReplaces) {
-		String[] fields = message.keySet().toArray(new String[] {});
-		Arrays.sort(fields, comparator);
+		List<String> fields = new ArrayList<String>(message.keySet());
+		Collections.sort(fields, comparator);
 
-		String result = "[\n";
+		StringBuilder result = new StringBuilder();
+		result.append("[\n");
 		for (String field : fields) {
 			String value = message.get(field);
 			if (value == null) value = "";
@@ -69,11 +74,11 @@ public class ObjectViewer {
 			if (fieldNameReplaces.containsKey(field))
 				field = fieldNameReplaces.get(field);
 
-			result += field + " = '" +
-				value + "'\n";
+			result.append(field).append(" = '")
+				.append(value).append("'\n");
 		}
-		result += ']';
+		result.append(']');
 
-		return result;
+		return result.toString();
 	}
 }

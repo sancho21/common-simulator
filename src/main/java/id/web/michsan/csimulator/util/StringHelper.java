@@ -18,10 +18,23 @@ public class StringHelper {
 		padders.put('0', createPadder('0'));
 	}
 
+	/**
+	 * Pad number with leading zero
+	 * @param number Number to pad
+	 * @param length Length of final padded text
+	 * @return After-pad text
+	 */
 	public static String pad(int number, int length) {
 		return pad(String.valueOf(number), length, false, '0');
 	}
 
+	/**
+	 * Get last n chars from a string. If the input string is shorter,
+	 * then it will return the string itself; e.g. "Sancho", 2 will give "ho"
+	 * @param string Input string
+	 * @param n Number of char to read
+	 * @return Last n chars of a string
+	 */
 	public static String lastNChars(String string, int n) {
 		int length = string.length();
 		if (length <= n) return string;
@@ -33,13 +46,21 @@ public class StringHelper {
 	/**
 	 * Adding trailing space to a string (left justified)
 	 * @param string Input string
-	 * @param length Length of padded string
+	 * @param length Length of final padded string
 	 * @return Padded string
 	 */
 	public static String pad(String string, int length) {
 		return pad(string, length, true, ' ');
 	}
 
+	/**
+	 * Add padding string before or after an object.
+	 * @param object Object to pad
+	 * @param length Length of final padded string
+	 * @param isLeftAligned If true then the final string is to-be-padded string + padding string; e.g. 'Hello    '
+	 * @param filler Padding character which forms a padding string
+	 * @return Padded string
+	 */
 	public static String pad(Object object, int length, boolean isLeftAligned, char filler) {
 		// Chop into to the specified length
 		String padded = chop(object.toString(), length, isLeftAligned);
@@ -54,6 +75,13 @@ public class StringHelper {
 		return isLeftAligned ? padded.concat(fillingStr) : fillingStr.concat(padded);
 	}
 
+	/**
+	 * Chop a string so that its final length will not exceed specified length
+	 * @param string Input string or string to process
+	 * @param length Length of final string
+	 * @param isLeftAligned If true then this method will preserve left side of original string
+	 * @return Chopping result
+	 */
 	public static String chop(String string, int length, boolean isLeftAligned) {
 		if (string.length() < length) return string;
 
@@ -61,16 +89,28 @@ public class StringHelper {
 		else				return string.substring(string.length() - length, string.length());
 	}
 
-	// Created by Glo?
-	public static boolean isEmpty(String input, boolean trim) {
-		if (input == null) return true;
 
-		if (trim) input = input.trim();
-		return input.isEmpty();
+	// Created by Glo?
+	/**
+	 * Checking if a string is empty.
+	 * @param string Input string
+	 * @param trim If true then it will assume whitespace string as empty
+	 * @return True if it is null or empty
+	 */
+	public static boolean isEmpty(String string, boolean trim) {
+		if (string == null) return true;
+
+		if (trim) string = string.trim();
+		return string.isEmpty();
 	}
 
-	public static String q(String value) {
-		return "'".concat(value).concat("'");
+	/**
+	 * Giving quote into a string; e.g. "hello" will be "'hello'"
+	 * @param string Input string
+	 * @return Quoted string
+	 */
+	public static String q(String string) {
+		return "'".concat(string).concat("'");
 	}
 
 	private static String createPadder(char c) {

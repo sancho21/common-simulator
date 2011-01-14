@@ -1,5 +1,6 @@
 1.1.0-BETA (Jan 14, 2011)
 	- Fix: Faster StringHelper.pad (more than 50X)
+	- Fix: Faster BaseProcessor
 
 1.1.0-SNAPSHOT (Jan 8, 2011)
 	- New: Response templates now use id.web.michsan.csimulator.Resolver
