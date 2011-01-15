@@ -174,6 +174,7 @@ public class ResponseTemplateTestCase {
 		assertEquals("Jack      Jakarta", responseFields.get("48"));
 	}
 
+	@Test
 	public void shouldUseResolver() {
 		// Given a template
 		Map<String, String> templateFields = new HashMap<String, String>();
@@ -185,6 +186,7 @@ public class ResponseTemplateTestCase {
 		// And expectation that the resolver react to the value
 		resolver = createMock(Resolver.class);
 		template.setResolver(resolver);
+		expect(resolver.resolve("Three One")).andReturn("Three One");
 		expect(resolver.resolve("<a-trick>")).andReturn("Wonderful trick!");
 		replay(resolver);
 
@@ -197,5 +199,42 @@ public class ResponseTemplateTestCase {
 		// Then
 		assertEquals("Three One", responseFields.get("31"));
 		assertEquals("Wonderful trick!", responseFields.get("32"));
+	}
+
+	@Test
+	public void shouldEchoOtherRequestField() {
+		// Given a template which echo from other field
+		Map<String, String> templateFields = new HashMap<String, String>();
+		templateFields.put("32", "<echo|f:24>");
+		ResponseTemplate template =
+			new ResponseTemplate("aRule", "Desc", templateFields, "unsed");
+		template.setResolver(resolver);
+
+		// When a request message comes
+		Map<String, String> requestFields = new HashMap<String, String>();
+		requestFields.put("24", "Halo Bandung");
+		Map<String, String> responseFields = template.createResponse(requestFields);
+
+		// Then field 32 should be the same with field 24
+		assertEquals("Halo Bandung", responseFields.get("32"));
+	}
+
+	@Test
+	public void shouldEchoSubstringOfOtherRequestField() {
+		// Given a template
+		Map<String, String> templateFields = new HashMap<String, String>();
+		templateFields.put("RX@F48", "1234567890<echo|*,10>Jakarta        <echo|0,3|f:RX@F17>Cool");
+		ResponseTemplate template =
+			new ResponseTemplate("aRule", "Desc", templateFields, "unsed");
+		template.setResolver(resolver);
+
+		// When a request (with different fields from the template) comes
+		Map<String, String> requestFields = new HashMap<String, String>();
+		requestFields.put("RX@F17", "Sun is beautiful");
+		requestFields.put("RX@F48", "0000000000CyberoMM  Jakarta        XXDWonderful");
+		Map<String, String> responseFields = template.createResponse(requestFields);
+
+		// Then
+		assertEquals("1234567890CyberoMM  Jakarta        SunCool", responseFields.get("RX@F48"));
 	}
 }

@@ -6,3 +6,5 @@ Features:
     - Response can be delayed
 
 To override value resolver, please override id.web.michsan.csimulator.Resolver and register it inside resolver.properties in your path.
+
+For more information, read on http://sourceforge.net/apps/mediawiki/commonsimulator

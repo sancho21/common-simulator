@@ -3,10 +3,30 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>id.web.michsan</groupId>
 	<artifactId>common-simulator</artifactId>
-	<version>1.1.0-BETA</version>
+	<version>1.2.0-BETA</version>
+	<packaging>bundle</packaging>
 	<name>Common Simulator</name>
 	<description>Simulator library which simulates remote peers e.g. using ISO-8583 protocol</description>
-	<url>http://michsan.web.id/simulator</url>
+	<url>http://michsan.web.id/common-simulator</url>
+
+	<licenses>
+		<license>
+			<name>LGPL</name>
+			<url>http://www.gnu.org/licenses/lgpl-2.1.txt</url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>Muhammad Ichsan</name>
+			<email>ichsan@gmail.com</email>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:git://commonsimulator.git.sourceforge.net/gitroot/commonsimulator/commonsimulator</connection>
+		<developerConnection>scm:git:ssh://commonsimulator.git.sourceforge.net/gitroot/commonsimulator/commonsimulator</developerConnection>
+	</scm>
 
 	<properties>
 		<slf4j.version>1.5.6</slf4j.version>
@@ -28,6 +48,7 @@
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>${slf4j.version}</version>
 			<scope>runtime</scope>
+			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>log4j</groupId>
@@ -84,49 +105,6 @@
 					</excludes>
 				</configuration>
 			</plugin>
-			<!-- To add doc into binary release -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.7</version>
-				<configuration>
-					<show>protected</show>
-					<detectLinks>true</detectLinks>
-					<stylesheet>maven</stylesheet>
-					<excludePackageNames>id.web.michsan.csimulator.util.grammar.*</excludePackageNames>
-					<links>
-						<link>http://download.oracle.com/javase/1.5.0/docs/api</link>
-					</links>
-				</configuration>
-				<executions>
-					<execution>
-						<id>javadoc</id>
-						<phase>package</phase>
-						<goals>
-							<goal>javadoc</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<!-- To configure build to create binary release -->
-			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>2.2</version>
-				<configuration>
-					<descriptors>
-						<descriptor>src/main/assembly/binary.xml</descriptor>
-					</descriptors>
-				</configuration>
-				<executions>
-					<execution>
-						<id>make-assembly</id>
-						<phase>package</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 			<!-- To compile Antlr file -->
 			<plugin>
 				<groupId>org.antlr</groupId>
@@ -140,6 +118,74 @@
 					</execution>
 				</executions>
 			</plugin>
+			<!-- osgi bundle generation -->
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<version>2.1.0</version>
+				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+						<Private-Package>
+							id.web.michsan.csimulator.util.grammar
+						</Private-Package>
+						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+					</instructions>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>production</id>
+			<build>
+				<plugins>
+					<!-- To add doc into binary release -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>2.7</version>
+						<configuration>
+							<show>protected</show>
+							<detectLinks>true</detectLinks>
+							<stylesheet>maven</stylesheet>
+							<excludePackageNames>id.web.michsan.csimulator.util.grammar.*</excludePackageNames>
+							<links>
+								<link>http://download.oracle.com/javase/1.5.0/docs/api</link>
+							</links>
+						</configuration>
+						<executions>
+							<execution>
+								<id>javadoc</id>
+								<phase>package</phase>
+								<goals>
+									<goal>javadoc</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<!-- To configure build to create binary release -->
+					<plugin>
+						<artifactId>maven-assembly-plugin</artifactId>
+						<version>2.2</version>
+						<configuration>
+							<descriptors>
+								<descriptor>src/main/assembly/binary.xml</descriptor>
+							</descriptors>
+						</configuration>
+						<executions>
+							<execution>
+								<id>make-assembly</id>
+								<phase>package</phase>
+								<goals>
+									<goal>single</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>

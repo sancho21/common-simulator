@@ -1,6 +1,7 @@
 package id.web.michsan.csimulator;
 
 import static id.web.michsan.csimulator.util.StringHelper.pad;
+import static id.web.michsan.csimulator.util.StringHelper.q;
 import id.web.michsan.csimulator.util.ConditionChecker;
 
 import java.util.ArrayList;
@@ -18,7 +19,14 @@ import java.util.regex.Pattern;
  * @since 1.0.1
  */
 public class ResponseTemplate implements Template {
-	private static final Pattern PRIVATE_ECHO_PATTERN = Pattern.compile("<echo\\|([0-9]+|\\*),[0-9]+>");
+	// e.g. <echo|*,10|f:34>
+	private static final Pattern PRIVATE_ECHO_PATTERN =
+		Pattern.compile("<echo\\|([0-9]+|\\*),[0-9]+(\\|f:\\S+){0,1}>");
+
+	// e.g. <echo|f:34>
+	private static final Pattern OTHER_ECHO_PATTERN =
+		Pattern.compile("<echo\\|f:\\S+>");
+
 	private final String condition;
 	private final String code;
 	private final Map<String, String> fields;
@@ -26,6 +34,11 @@ public class ResponseTemplate implements Template {
 	private final String name;
 	private Resolver resolver;
 
+	/**
+	 * Create response template from template. The template must have properties
+	 * named 'condition'
+	 * @param template Input template
+	 */
 	public ResponseTemplate(Template template) {
 		this(template.getCode(), template.getName(), template.getFields(),
 				template.getProperties().getProperty("condition"));
@@ -59,26 +72,30 @@ public class ResponseTemplate implements Template {
 		Map<String, String> rendered = new HashMap<String, String>();
 
 		for (Entry<String, String> entry : fields.entrySet()) {
-			String field = entry.getKey();
-			String value = entry.getValue();
+			String tField = entry.getKey(); // template field
+			String tValue = entry.getValue(); // template value
 
 			try {
-				if (value.equals("<echo>")) {
-					value = requestFields.get(field);
+				if (tValue.equals("<echo>")) {
+					tValue = requestFields.get(tField);
 				}
 
-				else if (value.contains("<echo|")) {
-					value = complexValueReplace(requestFields, field, value);
+				else if (OTHER_ECHO_PATTERN.matcher(tValue).find()) {
+					tValue = otherEcho(requestFields, tValue);
+				}
+
+				else if (tValue.contains("<echo|")) {
+					tValue = complexValueReplace(requestFields, tField, tValue.trim());
 				}
 
 				else {
-					value = resolver.resolve(value);
+					tValue = resolver.resolve(tValue);
 				}
 
-				rendered.put(field, value);
+				rendered.put(tField, tValue);
 
 			} catch (Exception e) {
-				throw new RuntimeException("Failed to create response for field: " + field, e);
+				throw new RuntimeException("Failed to create response for field: " + tField, e);
 			}
 		}
 
@@ -86,6 +103,11 @@ public class ResponseTemplate implements Template {
 		return rendered;
 	}
 
+	// Apply to <echo|f:34>
+	private String otherEcho(Map<String, String> requestFields, String tValue) {
+		String otherField = tValue.substring(8/*<echo|f:*/, tValue.length() - 1).trim();
+		return requestFields.get(otherField);
+	}
 
 	private String complexValueReplace(Map<String, String> requestFields,
 			String field, String value) {
@@ -98,19 +120,22 @@ public class ResponseTemplate implements Template {
 		StringBuffer sb = new StringBuffer();
 		while (m.find()) {
 			String echoPart = value.substring(m.start(), m.end());
-			String[] split = echoPart.split("\\|");
+			String[] echoAttrs = echoPart
+			.substring(1, echoPart.length() - 1) // remove < and >
+			.split("\\|");
+
+			String sourceValue = readSourceValue(requestFields, field, echoAttrs);
+
+			// Determine the beginning of copy and length to cpy
+			String[] positionAttrs = echoAttrs[1].split(",");
+			int textLength = Integer.parseInt(positionAttrs[1]);
 
 			int sourceBegin = m.start() - totalLastEchoLength + totalLastTextLength;
-
-			String position = split[1].replace(">", "");
-			split = position.split(",");
-			int textLength = Integer.parseInt(split[1]);
-
-			if (!"*".equals(split[0])) {
-				sourceBegin = Integer.parseInt(split[0]);
+			if (!"*".equals(positionAttrs[0])) {
+				sourceBegin = Integer.parseInt(positionAttrs[0]);
 			}
 
-			String replacement = pad(requestFields.get(field), sourceBegin + textLength)
+			String replacement = pad(sourceValue, sourceBegin + textLength)
 			.substring(sourceBegin, sourceBegin + textLength);
 			m.appendReplacement(sb, replacement);
 
@@ -120,6 +145,22 @@ public class ResponseTemplate implements Template {
 		m.appendTail(sb);
 
 		return sb.toString();
+	}
+
+	private String readSourceValue(Map<String, String> requestFields,
+			String rField, String[] templateParts) {
+		// Change source field
+		String sourceField = rField;
+		if (templateParts.length == 3) {
+			sourceField = templateParts[2].substring(2/*f:*/);
+		}
+
+		String sourceValue = requestFields.get(sourceField);
+		if (sourceValue == null) {
+			throw new RuntimeException("Can not read from request field " +
+					q(sourceField) + " as it doesn't exist!");
+		}
+		return sourceValue;
 	}
 
 	public String getCondition() {
