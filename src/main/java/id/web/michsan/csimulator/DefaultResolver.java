@@ -2,9 +2,9 @@ package id.web.michsan.csimulator;
 
 import static id.web.michsan.csimulator.util.StringHelper.q;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.commons.lang.time.FastDateFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +23,7 @@ public class DefaultResolver implements Resolver {
 
 		if (value.startsWith("<date:")) {
 			String format = value.replaceFirst("<date:", "").replace(">", "");
-			result = new SimpleDateFormat(format).format(new Date());
+			result = FastDateFormat.getInstance(format).format(new Date());
 		}
 		else if (value.equals("<counter>")) {
 			result = String.valueOf(++counter);

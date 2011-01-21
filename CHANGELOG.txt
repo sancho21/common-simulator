@@ -1,3 +1,7 @@
+2.0.0-BETA (Jan 21, 2011)
+	- Fix: Replaced SimpleDateFormat with FastDateFormat to solve concurrency problem.
+	- New: BaseProcessor.setDateFormat is gone. It is replaced by setDateFormatPattern which supports String pattern as in SimpleDateFormat.
+
 1.2.0-BETA (Jan 15, 2011)
 	- New: Response template can echo value from other fields
 	- New: Support OSGi

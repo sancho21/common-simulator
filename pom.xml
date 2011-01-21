@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>id.web.michsan</groupId>
 	<artifactId>common-simulator</artifactId>
-	<version>1.2.0-BETA</version>
+	<version>2.0.0-BETA</version>
 	<packaging>bundle</packaging>
 	<name>Common Simulator</name>
 	<description>Simulator library which simulates remote peers e.g. using ISO-8583 protocol</description>
@@ -34,6 +34,7 @@
 		<junit.version>4.8.2</junit.version>
 		<easymock.version>3.0</easymock.version>
 		<antlr.version>3.2</antlr.version>
+		<commons-lang.version>2.4</commons-lang.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -71,11 +72,16 @@
 			<type>jar</type>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.antlr</groupId>
 			<artifactId>antlr-runtime</artifactId>
 			<version>${antlr.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>${commons-lang.version}</version>
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>

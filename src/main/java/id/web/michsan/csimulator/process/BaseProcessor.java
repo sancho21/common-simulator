@@ -10,7 +10,6 @@ import id.web.michsan.csimulator.util.ObjectViewer;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Comparator;
 import java.util.Date;
@@ -18,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.apache.commons.lang.time.FastDateFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
 public class BaseProcessor implements Processor {
 	private static final transient Logger LOGGER = LoggerFactory.getLogger(BaseProcessor.class);
 
-	private DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm:ss,SSS");
+	private FastDateFormat dateFormat = FastDateFormat.getInstance("dd MMM yyyy HH:mm:ss,SSS");
 	private long responseDelay;
 	private Resolver resolver;
 	private static Class<? extends Resolver> resolverClass;
@@ -217,10 +217,18 @@ public class BaseProcessor implements Processor {
 
 	/* Accessors **************************************************************/
 
-	public void setDateFormat(DateFormat dateFormat) {
-		this.dateFormat = dateFormat;
+	/**
+	 * Set pattern of date format of information when a message is processed.
+	 * @param pattern Date pattern as in {@link SimpleDateFormat}.
+	 */
+	public void setDateFormatPattern(String pattern) {
+		this.dateFormat = FastDateFormat.getInstance("dd MMM yyyy HH:mm:ss,SSS");
 	}
 
+	/**
+	 * Global response delay
+	 * @param responseDelay Delay in milliseconds
+	 */
 	public void setResponseDelay(long responseDelay) {
 		this.responseDelay = responseDelay;
 	}
