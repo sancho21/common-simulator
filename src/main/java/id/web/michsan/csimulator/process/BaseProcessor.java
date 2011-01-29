@@ -31,7 +31,7 @@ public class BaseProcessor implements Processor {
 
 	private FastDateFormat dateFormat = FastDateFormat.getInstance("dd MMM yyyy HH:mm:ss,SSS");
 	private long responseDelay;
-	private Resolver resolver;
+	private static Resolver resolver;
 	private static Class<? extends Resolver> resolverClass;
 
 	public void process(Map<String, String> incomingMessageFields, List<ResponseTemplate> templates,
@@ -167,7 +167,11 @@ public class BaseProcessor implements Processor {
 		return template.getName() != null ? template.getName() : template.getCode();
 	}
 
-	public Resolver loadResolver() {
+	/**
+	 * Load resolver from runtime
+	 * @return Field value resolver
+	 */
+	private static Resolver loadResolver() {
 		if (resolver == null) {
 			if (resolverClass == null) {
 				loadClass();
@@ -222,7 +226,7 @@ public class BaseProcessor implements Processor {
 	 * @param pattern Date pattern as in {@link SimpleDateFormat}.
 	 */
 	public void setDateFormatPattern(String pattern) {
-		this.dateFormat = FastDateFormat.getInstance("dd MMM yyyy HH:mm:ss,SSS");
+		this.dateFormat = FastDateFormat.getInstance(pattern);
 	}
 
 	/**

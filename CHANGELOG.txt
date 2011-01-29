@@ -1,3 +1,7 @@
+2.0.0-GA (Jan 29, 2011)
+	- Fix: setDateFormatPattern should apply the supplied pattern
+	- Fix: No more override on loadResolver() and it's marked as static method
+
 2.0.0-BETA (Jan 21, 2011)
 	- Fix: Replaced SimpleDateFormat with FastDateFormat to solve concurrency problem.
 	- New: BaseProcessor.setDateFormat is gone. It is replaced by setDateFormatPattern which supports String pattern as in SimpleDateFormat.
