@@ -61,7 +61,7 @@ public class ResponseTemplateTestCase {
 		Map<String, String> templateFields = new HashMap<String, String>();
 		templateFields.put("32", "Pasti Ini");
 		ResponseTemplate template =
-			new ResponseTemplate("aRule", "Desc", templateFields, "unsed");
+			new ResponseTemplate("aRule", "Desc", templateFields, "unused");
 		template.setResolver(resolver);
 
 		Map<String, String> requestFields = new HashMap<String, String>();
@@ -86,7 +86,7 @@ public class ResponseTemplateTestCase {
 		Map<String, String> templateFields = new HashMap<String, String>();
 		templateFields.put("32", "<echo>");
 		ResponseTemplate template =
-			new ResponseTemplate("aRule", "Desc", templateFields, "unsed");
+			new ResponseTemplate("aRule", "Desc", templateFields, "unused");
 		template.setResolver(resolver);
 
 		Map<String, String> requestFields = new HashMap<String, String>();
@@ -136,7 +136,7 @@ public class ResponseTemplateTestCase {
 		Map<String, String> templateFields = new HashMap<String, String>();
 		templateFields.put("61", "KTP9999905000<echo|8,4>abc<echo|8,4>");
 		ResponseTemplate template =
-			new ResponseTemplate("aRule", "Desc", templateFields, "unsed");
+			new ResponseTemplate("aRule", "Desc", templateFields, "unused");
 		template.setResolver(resolver);
 
 		Map<String, String> requestFields = new HashMap<String, String>();
@@ -161,7 +161,7 @@ public class ResponseTemplateTestCase {
 		Map<String, String> templateFields = new HashMap<String, String>();
 		templateFields.put("48", "<echo|*,10>Jakarta");
 		ResponseTemplate template =
-			new ResponseTemplate("aRule", "Desc", templateFields, "unsed");
+			new ResponseTemplate("aRule", "Desc", templateFields, "unused");
 		template.setResolver(resolver);
 
 		Map<String, String> requestFields = new HashMap<String, String>();
@@ -181,7 +181,7 @@ public class ResponseTemplateTestCase {
 		templateFields.put("31", "Three One");
 		templateFields.put("32", "<a-trick>");
 		ResponseTemplate template =
-			new ResponseTemplate("aRule", "Desc", templateFields, "unsed");
+			new ResponseTemplate("aRule", "Desc", templateFields, "unused");
 
 		// And expectation that the resolver react to the value
 		resolver = createMock(Resolver.class);
@@ -207,7 +207,7 @@ public class ResponseTemplateTestCase {
 		Map<String, String> templateFields = new HashMap<String, String>();
 		templateFields.put("32", "<echo|f:24>");
 		ResponseTemplate template =
-			new ResponseTemplate("aRule", "Desc", templateFields, "unsed");
+			new ResponseTemplate("aRule", "Desc", templateFields, "unused");
 		template.setResolver(resolver);
 
 		// When a request message comes
@@ -225,7 +225,7 @@ public class ResponseTemplateTestCase {
 		Map<String, String> templateFields = new HashMap<String, String>();
 		templateFields.put("RX@F48", "1234567890<echo|*,10>Jakarta        <echo|0,3|f:RX@F17>Cool");
 		ResponseTemplate template =
-			new ResponseTemplate("aRule", "Desc", templateFields, "unsed");
+			new ResponseTemplate("aRule", "Desc", templateFields, "unused");
 		template.setResolver(resolver);
 
 		// When a request (with different fields from the template) comes
@@ -236,5 +236,23 @@ public class ResponseTemplateTestCase {
 
 		// Then
 		assertEquals("1234567890CyberoMM  Jakarta        SunCool", responseFields.get("RX@F48"));
+	}
+
+	@Test
+	public void shouldNotTrimMessage() {
+		// Given a template with tailing space
+		Map<String, String> templateFields = new HashMap<String, String>();
+		templateFields.put("RX@F48", "<echo|*,10> is cool! "); // Notice the last space
+		ResponseTemplate template =
+			new ResponseTemplate("aRule", "Desc", templateFields, "unsed");
+		template.setResolver(resolver);
+
+		// When a request (with different fields from the template) comes
+		Map<String, String> requestFields = new HashMap<String, String>();
+		requestFields.put("RX@F48", "Naomi Sach");
+		Map<String, String> responseFields = template.createResponse(requestFields);
+
+		// Then
+		assertEquals("Naomi Sach is cool! ", responseFields.get("RX@F48"));
 	}
 }

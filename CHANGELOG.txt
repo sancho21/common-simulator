@@ -1,3 +1,7 @@
+2.0.1 (Mar 3, 2011)
+	- Fix: Specified response message is trimmed
+	- Fix: Antlr grammar source file is misplaced so the package dependency failed on Eclipse
+	
 2.0.0-GA (Jan 29, 2011)
 	- Fix: setDateFormatPattern should apply the supplied pattern
 	- Fix: No more override on loadResolver() and it's marked as static method

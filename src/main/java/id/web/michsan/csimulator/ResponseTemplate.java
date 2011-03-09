@@ -85,7 +85,7 @@ public class ResponseTemplate implements Template {
 				}
 
 				else if (tValue.contains("<echo|")) {
-					tValue = complexValueReplace(requestFields, tField, tValue.trim());
+					tValue = complexValueReplace(requestFields, tField, tValue);
 				}
 
 				else {
