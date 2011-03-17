@@ -7,8 +7,8 @@ import static org.easymock.EasyMock.verify;
 import id.web.michsan.csimulator.RequestTemplate;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.Writer;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -36,9 +36,9 @@ public class BaseProcessor_loadingResolver_TestCase {
 
 		Properties props = new Properties();
 		props.setProperty("class", "id.web.michsan.csimulator.ExtendedResolver");
-		Writer writer = new FileWriter(configFile);
-		props.store(writer, "");
-		writer.close();
+		OutputStream os = new FileOutputStream(configFile);
+		props.store(os, "");
+		os.close();
 	}
 
 	@AfterClass

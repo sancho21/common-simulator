@@ -1,6 +1,9 @@
+2.0.2 (Mar 17, 2011)
+	- Fix: Can not run in Java 5 environment.
+
 2.0.1 (Mar 3, 2011)
-	- Fix: Specified response message is trimmed
-	- Fix: Antlr grammar source file is misplaced so the package dependency failed on Eclipse
+	- Fix: Specified response message is trimmed.
+	- Fix: Antlr grammar source file is misplaced so the package dependency failed on Eclipse.
 	
 2.0.0-GA (Jan 29, 2011)
 	- Fix: setDateFormatPattern should apply the supplied pattern

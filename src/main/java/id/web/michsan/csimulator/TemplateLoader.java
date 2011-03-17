@@ -1,8 +1,8 @@
 package id.web.michsan.csimulator;
 
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.Reader;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,9 +42,9 @@ public class TemplateLoader {
 	 */
 	public TemplateLoader(String templateCollectionFile, String listingField, String fieldIdentifier) throws IOException {
 		this.props = new Properties();
-		Reader reader = new FileReader(templateCollectionFile);
-		props.load(reader);
-		reader.close();
+		InputStream in = new FileInputStream(templateCollectionFile);
+		props.load(in);
+		in.close();
 
 		this.listingField = listingField;
 		this.fieldIdentifier = fieldIdentifier;
@@ -60,7 +60,7 @@ public class TemplateLoader {
 		String[] ruleNames = props.getProperty(listingField).split(",");
 		for (int i = 0; i < ruleNames.length; i++) {
 			String ruleName = ruleNames[i].trim();
-			if (!ruleName.isEmpty()) {
+			if (ruleName.length() != 0) {
 				templates.add(loadTemplate(props, ruleName));
 			}
 		}

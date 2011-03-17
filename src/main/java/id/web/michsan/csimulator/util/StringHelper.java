@@ -101,7 +101,7 @@ public class StringHelper {
 		if (string == null) return true;
 
 		if (trim) string = string.trim();
-		return string.isEmpty();
+		return string.length() == 0;
 	}
 
 	/**

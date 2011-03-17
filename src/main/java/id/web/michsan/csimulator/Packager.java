@@ -83,7 +83,7 @@ public class Packager {
 		    	boolean isLeftAligned = attrs.getNamedItem("leftAligned").getNodeValue().equals("true");
 		    	char filler = attrs.getNamedItem("filler").getNodeValue().charAt(0);
 		    	String validationRegex = attrs.getNamedItem("validationRegex").getNodeValue();
-		    	if (validationRegex.isEmpty()) validationRegex = null;
+		    	if (validationRegex.length() == 0) validationRegex = null;
 
 		    	fields.add(new Field(name, index, length, description,
 		    			isLeftAligned, filler, validationRegex));
