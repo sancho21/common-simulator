@@ -23,6 +23,7 @@ public class ConditionCheckerTestCase {
 		fields.put("f3", "300");
 		fields.put("f6", "600");
 		fields.put("f9", "900");
+		fields.put("f12", "");
 	}
 
 	@Test
@@ -49,5 +50,16 @@ public class ConditionCheckerTestCase {
 	@Test
 	public void shouldBeUnmatchedForMissingFields() {
 		assertFalse(ConditionChecker.match("f1:005", fields));
+	}
+
+	@Test
+	public void shouldHandleNegation() {
+		assertTrue(ConditionChecker.match("f1:!005", fields));
+	}
+
+	@Test
+	public void shouldHandleEmptyString() {
+		assertTrue(ConditionChecker.match("f12:", fields));
+		assertTrue(ConditionChecker.match("f0:!", fields));
 	}
 }

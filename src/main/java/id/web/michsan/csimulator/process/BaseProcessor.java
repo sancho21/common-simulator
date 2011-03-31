@@ -41,6 +41,10 @@ public class BaseProcessor implements Processor {
 		for (ResponseTemplate template : templates) {
 
 			if (template.match(incomingMessageFields)) {
+				if (LOGGER.isDebugEnabled()) {
+					LOGGER.debug("Match found!");
+				}
+
 				template.setResolver(loadResolver());
 				boolean isVerbose = isVerbose(template);
 
@@ -62,6 +66,9 @@ public class BaseProcessor implements Processor {
 			}
 		}
 
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("No match found!");
+		}
 		unmatchedMessageReceived(incomingMessageFields, receiveDate);
 	}
 

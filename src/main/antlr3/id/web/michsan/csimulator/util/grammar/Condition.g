@@ -38,8 +38,11 @@ booleanExp returns [boolean value]
 	;
 
 atomExp returns [boolean value]
-	:	f=VALID_CHARS ':' v=VALID_CHARS	{$value = $v.text.equals(fields.get($f.text));}
-	|	'(' exp=booleanExp ')'			{$value = $exp.value;}
+	:	f=VALID_CHARS ':!' v=VALID_CHARS	{$value = !$v.text.equals(fields.get($f.text));}
+		|	f=VALID_CHARS ':' v=VALID_CHARS	{$value = $v.text.equals(fields.get($f.text));}
+		|	f=VALID_CHARS ':!'				{$value = !"".equals(fields.get($f.text));}
+		|	f=VALID_CHARS ':'				{$value = "".equals(fields.get($f.text));}
+		|	'(' exp=booleanExp ')'			{$value = $exp.value;}
 	;
 
 VALID_CHARS
