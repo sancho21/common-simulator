@@ -29,12 +29,12 @@
 	</scm>
 
 	<properties>
-		<slf4j.version>1.5.6</slf4j.version>
+		<slf4j.version>1.6.1</slf4j.version>
 		<log4j.version>1.2.16</log4j.version>
 		<junit.version>4.8.2</junit.version>
 		<easymock.version>3.0</easymock.version>
-		<antlr.version>3.2</antlr.version>
-		<commons-lang.version>2.4</commons-lang.version>
+		<antlr.version>3.3</antlr.version>
+		<commons-lang.version>2.6</commons-lang.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 

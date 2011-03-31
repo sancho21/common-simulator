@@ -24,6 +24,7 @@ public class ConditionCheckerTestCase {
 		fields.put("f6", "600");
 		fields.put("f9", "900");
 		fields.put("f12", "");
+		fields.put("f13", "wow!");
 	}
 
 	@Test
@@ -54,12 +55,17 @@ public class ConditionCheckerTestCase {
 
 	@Test
 	public void shouldHandleNegation() {
-		assertTrue(ConditionChecker.match("f1:!005", fields));
+		assertTrue(ConditionChecker.match("f1!:005", fields));
 	}
 
 	@Test
 	public void shouldHandleEmptyString() {
 		assertTrue(ConditionChecker.match("f12:", fields));
-		assertTrue(ConditionChecker.match("f0:!", fields));
+		assertTrue(ConditionChecker.match("f0!:", fields));
+	}
+
+	// @Test
+	public void shouldHandleValueContainingSymbols() {
+		assertTrue(ConditionChecker.match("f13:wow!", fields));
 	}
 }

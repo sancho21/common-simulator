@@ -1,5 +1,5 @@
 2.0.3 (Mar 31, 2011)
-	- New: Support negation  e.g. 'f4:!hello'
+	- New: Support negation  e.g. 'f4!:hello'
 	- New: Support empty value e.g. 'f4:'
 
 2.0.2 (Mar 17, 2011)
