@@ -21,11 +21,12 @@ public class ConditionCheckerTestCase {
 		fields = new HashMap<String, String>();
 		fields.put("f0", "000");
 		fields.put("f3", "300");
+		fields.put("f5", " space ");
 		fields.put("f6", "600");
 		fields.put("f9", "900");
 		fields.put("f12", "");
 		fields.put("f13", "wow!");
-		fields.put("f5", " space ");
+		fields.put("f14", "Life is beautiful!");
 	}
 
 	@Test
@@ -82,5 +83,23 @@ public class ConditionCheckerTestCase {
 			ConditionChecker.match("f5 == invalid$yntax", fields);
 			assertTrue(false);
 		} catch (InvalidExpressionException e) {}
+	}
+
+	@Test
+	public void shouldHandleRegex() {
+		assertTrue(ConditionChecker.match("f3 ~~ \"[0-9]{3}\"", fields));
+		assertFalse(ConditionChecker.match("f3 !~ \"[0-9]{3}\"", fields));
+
+		assertTrue(ConditionChecker.match("f5 !~ \"[0-9]{3}\"", fields));
+		assertFalse(ConditionChecker.match("f5 ~~ \"[0-9]{3}\"", fields));
+	}
+
+	@Test
+	public void shouldHandleLike() {
+		assertTrue(ConditionChecker.match("f3 !% \"spa\"", fields));
+		assertFalse(ConditionChecker.match("f3 %% \"spa\"", fields));
+
+		assertTrue(ConditionChecker.match("f5 %% \"spa\"", fields));
+		assertFalse(ConditionChecker.match("f5 !% \"spa\"", fields));
 	}
 }

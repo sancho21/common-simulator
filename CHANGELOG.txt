@@ -1,3 +1,11 @@
+3.0.0 (Apr 4, 2011)
+	- New: Support regex (~~ and !~) and like (%% and !%).
+	- New: Current syntax requires for easier parsing and readability:
+		+ Values to be contained in String.
+		+ ':' is replaced with '=='
+		+ '!:' is replaced with '!='
+	- Fix: Invalid condition syntax doesn't trigger exception.
+
 2.0.3 (Mar 31, 2011)
 	- New: Support negation  e.g. 'f4!:hello'
 	- New: Support empty value e.g. 'f4:'

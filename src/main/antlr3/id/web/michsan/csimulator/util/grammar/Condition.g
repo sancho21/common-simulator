@@ -6,6 +6,10 @@ grammar Condition;
 tokens {
 	EQ='==';
 	NEQ='!=';
+	REQ='~~';
+	RNEQ='!~';
+	LEQ='%%';
+	LNEQ='!%';
 }
 
 /* Not important. But it defines namespace for the parser */
@@ -57,6 +61,13 @@ booleanExp returns [boolean value]
 atomExp returns [boolean value]
 	:	f=FIELD NEQ v=VALUE			{$value = !unwrap($v.text).equals(fields.get($f.text));}
 		|	f=FIELD EQ v=VALUE		{$value = unwrap($v.text).equals(fields.get($f.text));}
+		
+		|	f=FIELD RNEQ v=VALUE	{$value = fields.get($f.text) != null ? !fields.get($f.text).matches(unwrap($v.text)) : true;}
+		|	f=FIELD REQ v=VALUE		{$value = fields.get($f.text) != null ? fields.get($f.text).matches(unwrap($v.text)) : false;}
+
+		|	f=FIELD LNEQ v=VALUE	{$value = fields.get($f.text) != null ? fields.get($f.text).indexOf(unwrap($v.text)) == -1 : true;}
+		|	f=FIELD LEQ v=VALUE		{$value = fields.get($f.text) != null ? fields.get($f.text).indexOf(unwrap($v.text)) != -1 : false;}
+		
 		|	'(' exp=booleanExp ')'	{$value = $exp.value;}
 	;
 
@@ -65,7 +76,7 @@ VALUE
 	;
 
 FIELD
-	: (~(SPACE | ENDLINE | '(' | ')' | '!' | '='))+
+	: (~(SPACE | ENDLINE | '(' | ')' | '!' | '=' | '~' | '%'))+
 	;
 
 fragment SPACE:	' ' | '\t';
