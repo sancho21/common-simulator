@@ -3,6 +3,11 @@
 
 grammar Condition;
 
+tokens {
+	EQ='==';
+	NEQ='!=';
+}
+
 /* Not important. But it defines namespace for the parser */
 @header {
     package id.web.michsan.csimulator.util.grammar;
@@ -19,8 +24,20 @@ grammar Condition;
 /* Methods the parser may has */
 @members {
 	private Map<String, String> fields = new HashMap<String, String>();
-
-	public void setFields(Map<String, String> fields) {
+	
+	private String unwrap(String str) {
+		return str.substring(1, str.length() - 1); 
+	}
+	
+	// ANTLR will call this overridden method
+	@Override
+	public void emitErrorMessage(String msg) {
+		// By default is printing to System.err.println();
+       	ErrorReporter.report(msg);
+    }
+    
+    /* Accessors ******************************************** */
+    public void setFields(Map<String, String> fields) {
 		this.fields = fields;
 	}
 }
@@ -31,25 +48,35 @@ eval returns [boolean value]
 	;
 
 booleanExp returns [boolean value]
-	:	a1=atomExp			{$value = $a1.value;}		
-		( '&&' a2=atomExp	{$value = $value && $a2.value;}
-		| '||' a3=atomExp	{$value = $value || $a3.value;} 
+	:	a=atomExp			{$value = $a.value;}		
+		( '&&' a=atomExp	{$value = $value && $a.value;}
+		| '||' a=atomExp	{$value = $value || $a.value;} 
 		)*
 	;
 
 atomExp returns [boolean value]
-	:	f=VALID_CHARS '!:' v=VALID_CHARS	{$value = !$v.text.equals(fields.get($f.text));}
-		|	f=VALID_CHARS ':' v=VALID_CHARS	{$value = $v.text.equals(fields.get($f.text));}
-		|	f=VALID_CHARS '!:'				{$value = !"".equals(fields.get($f.text));}
-		|	f=VALID_CHARS ':'				{$value = "".equals(fields.get($f.text));}
-		|	'(' exp=booleanExp ')'			{$value = $exp.value;}
+	:	f=FIELD NEQ v=VALUE			{$value = !unwrap($v.text).equals(fields.get($f.text));}
+		|	f=FIELD EQ v=VALUE		{$value = unwrap($v.text).equals(fields.get($f.text));}
+		|	'(' exp=booleanExp ')'	{$value = $exp.value;}
 	;
 
-VALID_CHARS
-	:	(~(' ' | '\t' | '\n' | '\r' | ':' | '(' | ')' | '!'))+
+VALUE
+	:'"' (.)* '"'
 	;
+
+FIELD
+	: (~(SPACE | ENDLINE | '(' | ')' | '!' | '='))+
+	;
+
+fragment SPACE:	' ' | '\t';
+fragment ENDLINE: '\r' | '\n';
 
 /* We're going to ignore all white space characters */
 WS
-	:	(' ' | '\t' | '\r'| '\n') {$channel=HIDDEN;}
+	: (SPACE | ENDLINE) {$channel=HIDDEN;}
 	;
+
+/*
+Sample to test:
+f4 == "" || f2 == "f2" || wf@45 == "Go Ion" || (2 == "" || wf@45 != "5)") || 5 == "wow!" || 5i != " wonder!ful 5 == 6"
+*/

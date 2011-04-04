@@ -25,47 +25,62 @@ public class ConditionCheckerTestCase {
 		fields.put("f9", "900");
 		fields.put("f12", "");
 		fields.put("f13", "wow!");
+		fields.put("f5", " space ");
 	}
 
 	@Test
 	public void shouldBeMatched() {
-		assertTrue(ConditionChecker.match("f0:000", fields));
+		assertTrue(ConditionChecker.match("f0 == \"000\"", fields));
+		assertTrue(ConditionChecker.match("f0==\"000\"", fields));
 	}
 
 	@Test
 	public void shouldBeUnmatched() {
-		assertFalse(ConditionChecker.match("f0:005", fields));
+		assertFalse(ConditionChecker.match("f0 == \"005\"", fields));
 	}
 
 	@Test
 	public void shouldBeMatchedInComplex() {
-		assertTrue(ConditionChecker.match("f0:000 && f3:300", fields));
-		assertTrue(ConditionChecker.match("f0:000 && (f3:300 || f6:700)", fields));
+		assertTrue(ConditionChecker.match("f0 == \"000\" && f3 == \"300\"", fields));
+		assertTrue(ConditionChecker.match("f0 == \"000\" && (f3 == \"300\" || f6 == \"700\")", fields));
 	}
 
 	@Test
 	public void shouldBeUnmatchedInComplex() {
-		assertFalse(ConditionChecker.match("f0:005 && (f3:300 || f6:700)", fields));
+		assertFalse(ConditionChecker.match("f0 == \"005\" && (f3 == \"300\" || f6 == \"700\")", fields));
 	}
 
 	@Test
 	public void shouldBeUnmatchedForMissingFields() {
-		assertFalse(ConditionChecker.match("f1:005", fields));
+		assertFalse(ConditionChecker.match("f1 == \"005\"", fields));
 	}
 
 	@Test
 	public void shouldHandleNegation() {
-		assertTrue(ConditionChecker.match("f1!:005", fields));
+		assertTrue(ConditionChecker.match("f1 != \"005\"", fields));
 	}
 
 	@Test
 	public void shouldHandleEmptyString() {
-		assertTrue(ConditionChecker.match("f12:", fields));
-		assertTrue(ConditionChecker.match("f0!:", fields));
+		assertTrue(ConditionChecker.match("f12 == \"\"", fields));
+		assertTrue(ConditionChecker.match("f0 != \"\"", fields));
 	}
 
-	// @Test
+	@Test
 	public void shouldHandleValueContainingSymbols() {
-		assertTrue(ConditionChecker.match("f13:wow!", fields));
+		assertTrue(ConditionChecker.match("f13 == \"wow!\"", fields));
+	}
+
+	@Test
+	public void shouldHandleValueContainingSpaces() {
+		assertTrue(ConditionChecker.match("f5 == \" space \"", fields));
+	}
+
+	@Test
+	public void shouldThrowExceptionIfInvalidSyntaxFound() {
+		try {
+			ConditionChecker.match("f5 == invalid$yntax", fields);
+			assertTrue(false);
+		} catch (InvalidExpressionException e) {}
 	}
 }

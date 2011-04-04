@@ -67,8 +67,8 @@ public class BaseProcessor_process_TestCase {
 		Map<String, String> fields = new HashMap<String, String>();
 		fields.put("fieldOne", "Halo");
 		fields.put("fieldTwo", "<echo>");
-		templates.add(new ResponseTemplate("c1", "n1", fields, "fieldOne:Hello"));
-		templates.add(new ResponseTemplate("c2", "n2", fields, "fieldOne:Good"));
+		templates.add(new ResponseTemplate("c1", "n1", fields, "fieldOne==\"Hello\""));
+		templates.add(new ResponseTemplate("c2", "n2", fields, "fieldOne==\"Good\""));
 
 		// With this expectation
 		responseSender.send(anyObject(Map.class));
@@ -96,8 +96,8 @@ public class BaseProcessor_process_TestCase {
 		Map<String, String> fields = new HashMap<String, String>();
 		fields.put("fieldOne", "Halo");
 		fields.put("fieldTwo", "<echo>");
-		templates.add(new ResponseTemplate("c1", "n1", fields, "fieldOne:Guten"));
-		templates.add(new ResponseTemplate("c2", "n2", fields, "fieldOne:Baik"));
+		templates.add(new ResponseTemplate("c1", "n1", fields, "fieldOne==\"Guten\""));
+		templates.add(new ResponseTemplate("c2", "n2", fields, "fieldOne==\"Baik\""));
 
 		// With this expectation (no call to response sender)
 		replay(responseSender);
@@ -126,7 +126,7 @@ public class BaseProcessor_process_TestCase {
 		Map<String, String> fields = new HashMap<String, String>();
 		fields.put("fieldOne", "Halo");
 		fields.put("fieldTwo", "<echo>");
-		ResponseTemplate template = new ResponseTemplate("c1", "n1", fields, "fieldOne:Hello");
+		ResponseTemplate template = new ResponseTemplate("c1", "n1", fields, "fieldOne==\"Hello\"");
 		templates.add(template);
 
 		// When this matched message comes
@@ -150,7 +150,7 @@ public class BaseProcessor_process_TestCase {
 		Map<String, String> fields = new HashMap<String, String>();
 		fields.put("fieldOne", "Halo");
 		fields.put("fieldTwo", "<echo>");
-		ResponseTemplate template = new ResponseTemplate("c1", "n1", fields, "fieldOne:Hello");
+		ResponseTemplate template = new ResponseTemplate("c1", "n1", fields, "fieldOne==\"Hello\"");
 		template.getProperties().setProperty("response_delay", "400"); // This overrides global delay
 		templates.add(template);
 

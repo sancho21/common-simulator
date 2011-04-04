@@ -36,7 +36,7 @@ public class ResponseTemplateTestCase {
 		// Given
 		Map<String, String> templateFields = new HashMap<String, String>();
 		ResponseTemplate template =
-			new ResponseTemplate("aRule", "Desc", templateFields, "0:0200 && 5:keren");
+			new ResponseTemplate("aRule", "Desc", templateFields, "0==\"0200\" && 5==\"keren\"");
 
 		Map<String, String> requestFields1 = new HashMap<String, String>();
 		requestFields1.put("0", "0200");
