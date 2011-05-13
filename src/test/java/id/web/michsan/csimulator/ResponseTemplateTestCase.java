@@ -3,6 +3,7 @@ package id.web.michsan.csimulator;
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -199,6 +200,61 @@ public class ResponseTemplateTestCase {
 		// Then
 		assertEquals("Three One", responseFields.get("31"));
 		assertEquals("Wonderful trick!", responseFields.get("32"));
+	}
+
+
+	@Test
+	public void shouldRenderTheSameResolvedValueInOneCycle() {
+		// Given: we have a response template having the same resolving values
+		Map<String, String> fields = new HashMap<String, String>();
+		fields.put("F55", "<counting>");
+		fields.put("F65", "<counting>");
+		ResponseTemplate template =
+			new ResponseTemplate("aRule", "Desc", fields, "unused");
+
+		// And: a template resolver
+		resolver = createMock(Resolver.class);
+		template.setResolver(resolver);
+		expect(resolver.resolve("<counting>")).andReturn("500");
+		replay(resolver);
+
+		// When: we create a response
+		Map<String, String> responseFields = template.createResponse(new HashMap<String, String>());
+
+		// Then: we should get the same rendered value
+		assertEquals("500", responseFields.get("F55"));
+		assertEquals("500", responseFields.get("F65"));
+
+		// And: resolver is just called once
+		verify(resolver);
+	}
+
+	@Test
+	public void shouldRenderDifferentlyBetweenCycles() {
+		// Given: we have a response template having the same resolving values
+		Map<String, String> fields = new HashMap<String, String>();
+		fields.put("F55", "<counting>");
+		fields.put("F65", "<counting>");
+		ResponseTemplate template =
+			new ResponseTemplate("aRule", "Desc", fields, "unused");
+
+		// And: a template resolver
+		resolver = createMock(Resolver.class);
+		template.setResolver(resolver);
+		expect(resolver.resolve("<counting>")).andReturn("500");
+		expect(resolver.resolve("<counting>")).andReturn("550");
+		replay(resolver);
+
+		// When:we create a response
+		Map<String, String> responseFields1 = template.createResponse(new HashMap<String, String>());
+		Map<String, String> responseFields2 = template.createResponse(new HashMap<String, String>());
+
+		// Then: we should get different render result
+		assertEquals("500", responseFields1.get("F55"));
+		assertEquals("550", responseFields2.get("F65"));
+
+		// And: resolver is just called once
+		verify(resolver);
 	}
 
 	@Test

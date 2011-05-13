@@ -37,9 +37,17 @@ public class RequestTemplate implements Template {
 	public Map<String, String> render() {
 		HashMap<String, String> rendered = new HashMap<String, String>();
 
+		Map<String, String> resolvedValues = new HashMap<String, String>();
+
 		for (Entry<String, String> entry : fields.entrySet()) {
 			String field = entry.getKey();
-			String value = resolver.resolve(entry.getValue());
+
+			String value = resolvedValues.get(entry.getValue());
+			if (value == null) {
+				value = resolver.resolve(entry.getValue());
+				resolvedValues.put(entry.getValue(), value);
+			}
+
 			rendered.put(field, value);
 		}
 

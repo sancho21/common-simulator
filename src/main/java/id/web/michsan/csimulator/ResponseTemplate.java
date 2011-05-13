@@ -71,6 +71,8 @@ public class ResponseTemplate implements Template {
 	public Map<String, String> createResponse(Map<String, String> requestFields) {
 		Map<String, String> rendered = new HashMap<String, String>();
 
+		Map<String, String> resolvedValues = new HashMap<String, String>();
+
 		for (Entry<String, String> entry : fields.entrySet()) {
 			String tField = entry.getKey(); // template field
 			String tValue = entry.getValue(); // template value
@@ -89,7 +91,13 @@ public class ResponseTemplate implements Template {
 				}
 
 				else {
-					tValue = resolver.resolve(tValue);
+					String value = resolvedValues.get(tValue);
+					if (value == null) {
+						value = resolver.resolve(tValue);
+						resolvedValues.put(entry.getValue(), value);
+					}
+
+					tValue = value;
 				}
 
 				rendered.put(tField, tValue);
