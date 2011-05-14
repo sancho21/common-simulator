@@ -4,16 +4,17 @@ import id.web.michsan.csimulator.Resolver;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 /**
- * Resolver which returns value by rotating defined values
+ * Resolver which returns random value from defined values
  * @author Muhammad Ichsan (ichsan@gmail.com)
  * @since 3.0.1
  */
-public class RotatingResolver implements Resolver {
+public class RandomizingResolver implements Resolver {
 
 	private final Map<String, String[]> rotatingValues = new HashMap<String, String[]>();
-	private final Map<String, Integer> rotatingValueIndexes = new HashMap<String, Integer>();
+	private final Random random = new Random();
 
 	public String resolve(String value) {
 		String key = value;
@@ -21,26 +22,17 @@ public class RotatingResolver implements Resolver {
 		if (!rotatingValues.containsKey(key)) {
 			rotatingValues.put(key, value.substring(8, value.length() - 1)
 				.split("\\|"));
-			rotatingValueIndexes.put(value, 0);
 		}
-		return handleRotation(value);
+		return handle(value);
 	}
 
-	private String handleRotation(String fieldValue) {
+	private String handle(String fieldValue) {
 		String key = fieldValue;
 
 		String[] values = rotatingValues.get(key);
-		int idx = rotatingValueIndexes.get(key);
+		int idx = random.nextInt(values.length);
 		fieldValue = values[idx];
 
-		int laterIdx = calcLaterIndex(idx, values.length);
-		rotatingValueIndexes.put(key, laterIdx);
 		return fieldValue;
-	}
-
-	private int calcLaterIndex(int idx, int numOfData) {
-		if (idx < numOfData - 1)
-			return idx + 1;
-		return 0;
 	}
 }

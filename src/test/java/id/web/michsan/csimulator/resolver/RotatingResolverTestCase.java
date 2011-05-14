@@ -1,6 +1,7 @@
 package id.web.michsan.csimulator.resolver;
 
 import static org.junit.Assert.assertEquals;
+import id.web.michsan.csimulator.Resolver;
 
 import org.junit.Test;
 
@@ -12,9 +13,9 @@ import org.junit.Test;
 public class RotatingResolverTestCase {
 
 	@Test
-	public void shouldResolveCounter() {
-		RotatingResolver resolver = new RotatingResolver();
-		String value = "<rotate|Good Morning|Bukittinggi|Cilacap>";
+	public void shouldResolve() {
+		Resolver resolver = new RotatingResolver();
+		String value = "<rotate:Good Morning|Bukittinggi|Cilacap>";
 
 		assertEquals("Good Morning", resolver.resolve(value));
 		assertEquals("Bukittinggi", resolver.resolve(value));

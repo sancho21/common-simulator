@@ -1,3 +1,8 @@
+3.1.0 (May 14, 2011)
+    - New: Rotate resolver is implemented using tag <rotate:value1|value2>
+    - New: Randomizing resolver is implemented using tag <random:value1|value2>
+    - Fix: The <counter> resolution should be unique only per cycle
+
 3.0.0 (Apr 4, 2011)
 	- New: Support regex (~~ and !~) and like (%% and !%).
 	- New: Current syntax requires for easier parsing and readability:
