@@ -11,7 +11,7 @@ import java.util.Map;
 
 /**
  * To view object in string representation
- * @author Muhammad Ichsan (ichsan@gmail.com)
+ * @author <a href="mailto:ichsan@gmail.com">Muhammad Ichsan</a>
  * @since 1.0.0
  */
 public class ObjectViewer {

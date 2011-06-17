@@ -10,7 +10,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- * @author Muhammad Ichsan (ichsan@gmail.com)
+ * @author <a href="mailto:ichsan@gmail.com">Muhammad Ichsan</a>
  * @since 1.0.3
  */
 public class ConditionCheckerTestCase {

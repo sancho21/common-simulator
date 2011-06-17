@@ -2,7 +2,7 @@ package id.web.michsan.csimulator.util;
 
 /**
  *
- * @author Muhammad Ichsan (ichsan@gmail.com)
+ * @author <a href="mailto:ichsan@gmail.com">Muhammad Ichsan</a>
  * @since 1.0.3
  */
 public class InvalidExpressionException extends RuntimeException {

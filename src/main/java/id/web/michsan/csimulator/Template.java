@@ -5,7 +5,7 @@ import java.util.Properties;
 
 /**
  * Template
- * @author Muhammad Ichsan (ichsan@gmail.com)
+ * @author <a href="mailto:ichsan@gmail.com">Muhammad Ichsan</a>
  * @since 1.0.1
  */
 public interface Template {

@@ -20,7 +20,7 @@ import org.junit.Test;
 
 /**
  *
- * @author Muhammad Ichsan (ichsan@gmail.com)
+ * @author <a href="mailto:ichsan@gmail.com">Muhammad Ichsan</a>
  *
  */
 @Ignore("Do not know how to test this")

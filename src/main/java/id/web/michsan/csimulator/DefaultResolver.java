@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Default resolver which can handle &lt;date:HHmmss&gt;, &lt;counter&gt;
- * @author Muhammad Ichsan (ichsan@gmail.com)
+ * @author <a href="mailto:ichsan@gmail.com">Muhammad Ichsan</a>
  * @since 1.0.1
  */
 public class DefaultResolver implements Resolver {

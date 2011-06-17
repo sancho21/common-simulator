@@ -3,7 +3,7 @@ package id.web.michsan.csimulator;
 /**
  * Resolve value in the message field. It should be used one instance for each
  * endpoint. Usually this is used to resolve special values into generated values.
- * @author Muhammad Ichsan (ichsan@gmail.com)
+ * @author <a href="mailto:ichsan@gmail.com">Muhammad Ichsan</a>
  * @since 1.0.1
  */
 public interface Resolver {

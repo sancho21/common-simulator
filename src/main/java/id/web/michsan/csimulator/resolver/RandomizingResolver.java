@@ -8,7 +8,7 @@ import java.util.Random;
 
 /**
  * Resolver which returns random value from defined values
- * @author Muhammad Ichsan (ichsan@gmail.com)
+ * @author <a href="mailto:ichsan@gmail.com">Muhammad Ichsan</a>
  * @since 3.0.1
  */
 public class RandomizingResolver implements Resolver {

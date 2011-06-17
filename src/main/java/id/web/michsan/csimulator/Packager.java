@@ -25,7 +25,7 @@ import org.xml.sax.SAXException;
 
 /**
  * Packager composes fields into a long string
- * @author Muhammad Ichsan (ichsan@gmail.com)
+ * @author <a href="mailto:ichsan@gmail.com">Muhammad Ichsan</a>
  * @since 1.0.0
  */
 public class Packager {

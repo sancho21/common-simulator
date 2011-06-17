@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Basic implementation of a Processor
- * @author Muhammad Ichsan (ichsan@gmail.com)
+ * @author <a href="mailto:ichsan@gmail.com">Muhammad Ichsan</a>
  * @since 1.0.1
  */
 public class BaseProcessor implements Processor {
@@ -162,11 +162,11 @@ public class BaseProcessor implements Processor {
 	/**
 	 * This is called when a request message is rendered. This is only for
 	 *  information reason.
-	 * @param ruleName Rule name the request message belongs to
+	 * @param ruleNameOrCode Rule name the request message belongs to
 	 * @param requestFields Rendered request fields
 	 */
-	protected void requestSent(String ruleName, Map<String, String> requestFields) {
-		System.out.println("Sending " + q(ruleName) + " on " + dateFormat.format(new Date()));
+	protected void requestSent(String ruleNameOrCode, Map<String, String> requestFields) {
+		System.out.println("Sending " + q(ruleNameOrCode) + " on " + dateFormat.format(new Date()));
 		System.out.println(viewOrderedContents(requestFields));
 	}
 

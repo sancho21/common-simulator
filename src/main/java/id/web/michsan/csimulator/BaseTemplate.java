@@ -6,7 +6,7 @@ import java.util.Properties;
 
 /**
  * Basic template which can be a response template or a request template
- * @author Muhammad Ichsan (ichsan@gmail.com)
+ * @author <a href="mailto:ichsan@gmail.com">Muhammad Ichsan</a>
  *
  */
 public class BaseTemplate implements Template {

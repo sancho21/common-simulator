@@ -2,7 +2,7 @@ package id.web.michsan.csimulator;
 
 /**
  * Representation of message field
- * @author Muhammad Ichsan (ichsan@gmail.com)
+ * @author <a href="mailto:ichsan@gmail.com">Muhammad Ichsan</a>
  * @since 1.0.0
  */
 public class Field implements Comparable<Field> {

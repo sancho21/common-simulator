@@ -7,7 +7,7 @@ import java.util.Map;
 
 /**
  * Resolver which returns value by rotating defined values
- * @author Muhammad Ichsan (ichsan@gmail.com)
+ * @author <a href="mailto:ichsan@gmail.com">Muhammad Ichsan</a>
  * @since 3.0.1
  */
 public class RotatingResolver implements Resolver {

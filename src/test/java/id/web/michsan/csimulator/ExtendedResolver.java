@@ -2,7 +2,7 @@ package id.web.michsan.csimulator;
 
 /**
 *
-* @author Muhammad Ichsan (ichsan@gmail.com)
+* @author <a href="mailto:ichsan@gmail.com">Muhammad Ichsan</a>
 *
 */
 public class ExtendedResolver extends DefaultResolver {

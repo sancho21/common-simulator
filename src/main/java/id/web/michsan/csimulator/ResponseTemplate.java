@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 
 /**
  * Template for response which also can compose response message
- * @author Muhammad Ichsan (ichsan@gmail.com)
+ * @author <a href="mailto:ichsan@gmail.com">Muhammad Ichsan</a>
  * @since 1.0.1
  */
 public class ResponseTemplate implements Template {
