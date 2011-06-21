@@ -36,7 +36,7 @@ public class TemplateLoader {
 	/**
 	 * Load all templates form properties file
 	 * @param templateCollectionFile Properties file containing templates
-	 * @param listingField Field of properties which contains the template codes
+	 * @param listingField Field of properties which contains the template names
 	 * @param fieldIdentifier Field identifier, e.g. response in rule.echo.response.39=00
 	 * @throws IOException Failed to read file
 	 */
@@ -57,18 +57,18 @@ public class TemplateLoader {
 	public List<Template> load() {
 		List<Template> templates = new ArrayList<Template>();
 
-		String[] ruleCodes = props.getProperty(listingField).split(",");
-		for (int i = 0; i < ruleCodes.length; i++) {
-			String ruleCode = ruleCodes[i].trim();
-			if (ruleCode.length() != 0) {
-				templates.add(loadTemplate(props, ruleCode));
+		String[] ruleNames = props.getProperty(listingField).split(",");
+		for (int i = 0; i < ruleNames.length; i++) {
+			String ruleName = ruleNames[i].trim();
+			if (ruleName.length() != 0) {
+				templates.add(loadTemplate(props, ruleName));
 			}
 		}
 
 		return templates;
 	}
 
-	private Template loadTemplate(Properties props, String ruleCode) {
+	private Template loadTemplate(Properties props, String ruleName) {
 		Map<String, String> templateFields = new HashMap<String, String>();
 
 		Properties properties = new Properties();
@@ -77,22 +77,22 @@ public class TemplateLoader {
 			String keyStr = (String) entry.getKey();
 
 			// Field
-			if (keyStr.matches("rule\\." + ruleCode + "\\." + fieldIdentifier + "\\..+")) {
+			if (keyStr.matches("rule\\." + ruleName + "\\." + fieldIdentifier + "\\..+")) {
 				String field = keyStr.replace(
-						"rule." + ruleCode + "." + fieldIdentifier + ".", "");
+						"rule." + ruleName + "." + fieldIdentifier + ".", "");
 				templateFields.put(field, entry.getValue().toString());
 
 			// Other properties
-			} else if (keyStr.matches("rule\\." + ruleCode + ".+")) {
+			} else if (keyStr.matches("rule\\." + ruleName + ".+")) {
 				properties.setProperty(
-						keyStr.replace("rule." + ruleCode + ".", ""),
+						keyStr.replace("rule." + ruleName + ".", ""),
 						entry.getValue().toString());
 
 			}
 		}
 
-		BaseTemplate template = new BaseTemplate(ruleCode, templateFields);
-		template.setName((String) properties.remove("name"));
+		BaseTemplate template = new BaseTemplate(ruleName, templateFields);
+		template.setLabel((String) properties.remove("label"));
 		template.setProperties(properties); // Set the rest values
 
 		return template;

@@ -1,7 +1,7 @@
-rule_codes = network, update_limit, reversal
+rule_names = network, update_limit, reversal
 
 rule.network.condition = 0 == "0800" && 11 == "123456"
-rule.network.name = Network Control
+rule.network.label = Network Control
 rule.network.verbose = false
 rule.network.response.0 = 0810
 rule.network.response.39 = 00

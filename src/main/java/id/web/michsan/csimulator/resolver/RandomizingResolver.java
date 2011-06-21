@@ -16,6 +16,10 @@ public class RandomizingResolver implements Resolver {
 	private final Map<String, String[]> rotatingValues = new HashMap<String, String[]>();
 	private final Random random = new Random();
 
+	/**
+	 * Can resolve "&lt;random|value 1|value 2&gt;" into "value 1" or
+	 * "value 2" randomly for each method invocation.
+	 */
 	public String resolve(String value) {
 		String key = value;
 

@@ -13,20 +13,20 @@ import java.util.Properties;
  * @since 1.0.1
  */
 public class RequestTemplate implements Template {
-	private final String code;
 	private final String name;
+	private final String label;
 	private final Map<String, String> fields;
 	private Properties properties = new Properties();
 	private Resolver resolver;
 
 	public RequestTemplate(Template template) {
-		this(template.getCode(), template.getName(), template.getFields());
+		this(template.getName(), template.getLabel(), template.getFields());
 		properties = template.getProperties();
 	}
 
-	public RequestTemplate(String code, String name, Map<String, String> fields) {
-		this.code = code;
+	public RequestTemplate(String name, String label, Map<String, String> fields) {
 		this.name = name;
+		this.label = label;
 		this.fields = fields;
 	}
 
@@ -77,12 +77,12 @@ public class RequestTemplate implements Template {
 		this.properties = properties;
 	}
 
-	public String getCode() {
-		return code;
-	}
-
 	public String getName() {
 		return name;
+	}
+
+	public String getLabel() {
+		return label;
 	}
 
 	public Map<String, String> getFields() {

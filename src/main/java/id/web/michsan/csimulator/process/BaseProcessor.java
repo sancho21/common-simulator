@@ -121,7 +121,7 @@ public class BaseProcessor implements Processor {
 		System.out.println("Received on " + dateFormat.format(receiveDate) + ":");
 		System.out.println(viewOrderedContents(requestFields));
 		System.out.println("Match to rule: " +
-				(template.getName() != null ? template.getName() : template.getCode()));
+				(template.getLabel() != null ? template.getLabel() : template.getName()));
 	}
 
 	/**
@@ -171,7 +171,7 @@ public class BaseProcessor implements Processor {
 	}
 
 	private String readNameOrCode(RequestTemplate template) {
-		return template.getName() != null ? template.getName() : template.getCode();
+		return template.getLabel() != null ? template.getLabel() : template.getName();
 	}
 
 	/**

@@ -8,7 +8,7 @@ package id.web.michsan.csimulator;
  */
 public interface Resolver {
 	/**
-	 * To resolve what a value means for e.g. "date:HHmmss" can be resolved
+	 * To resolve what a value means. E.g. "date:HHmmss" can be resolved
 	 * into 111533
 	 * @param value Value to resolve
 	 * @return Result

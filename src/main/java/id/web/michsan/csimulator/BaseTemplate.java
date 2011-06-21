@@ -11,18 +11,18 @@ import java.util.Properties;
  */
 public class BaseTemplate implements Template {
 	private final Map<String, String> fields;
-	private final String code;
+	private final String name;
 	private Properties properties = new Properties(); // Other properties
-	private String name;
+	private String label;
 
 	/**
 	 * Create a base template
-	 * @param code Unique identifier of the template which has no empty chars.
+	 * @param name Unique identifier of the template which has no empty chars.
 	 * The value should simple; e.g. bill_payment
 	 * @param fields List of pairs of field name and value
 	 */
-	public BaseTemplate(String code, Map<String, String> fields) {
-		this.code = code;
+	public BaseTemplate(String name, Map<String, String> fields) {
+		this.name = name;
 		this.fields = Collections.unmodifiableMap(fields);
 	}
 
@@ -30,8 +30,8 @@ public class BaseTemplate implements Template {
 		return fields;
 	}
 
-	public String getCode() {
-		return code;
+	public String getName() {
+		return name;
 	}
 
 	public Properties getProperties() {
@@ -46,15 +46,15 @@ public class BaseTemplate implements Template {
 		this.properties = properties;
 	}
 
-	public String getName() {
-		return name;
+	public String getLabel() {
+		return label;
 	}
 
 	/**
 	 * Set a human friendly name to this template; e.g. Bill Payment
-	 * @param name Human friendly name of the template
+	 * @param label Human friendly name of the template
 	 */
-	public void setName(String name) {
-		this.name = name;
+	public void setLabel(String label) {
+		this.label = label;
 	}
 }

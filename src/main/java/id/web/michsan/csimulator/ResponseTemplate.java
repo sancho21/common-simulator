@@ -28,10 +28,10 @@ public class ResponseTemplate implements Template {
 		Pattern.compile("<echo\\|f:\\S+>");
 
 	private final String condition;
-	private final String code;
+	private final String name;
 	private final Map<String, String> fields;
 	private Properties properties = new Properties();
-	private final String name;
+	private final String label;
 	private Resolver resolver;
 
 	/**
@@ -40,16 +40,16 @@ public class ResponseTemplate implements Template {
 	 * @param template Input template
 	 */
 	public ResponseTemplate(Template template) {
-		this(template.getCode(), template.getName(), template.getFields(),
+		this(template.getName(), template.getLabel(), template.getFields(),
 				template.getProperties().getProperty("condition"));
 
 		properties = template.getProperties();
 	}
 
-	public ResponseTemplate(String code, String name,
+	public ResponseTemplate(String name, String label,
 			Map<String, String> fields, String condition) {
-		this.code = code;
 		this.name = name;
+		this.label = label;
 		this.fields = fields;
 		this.condition = condition;
 	}
@@ -175,12 +175,12 @@ public class ResponseTemplate implements Template {
 		return condition;
 	}
 
-	public String getCode() {
-		return code;
-	}
-
 	public String getName() {
 		return name;
+	}
+
+	public String getLabel() {
+		return label;
 	}
 
 	public Map<String, String> getFields() {

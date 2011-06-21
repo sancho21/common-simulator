@@ -19,7 +19,7 @@ public class TemplateLoaderTestCase {
 
 	@BeforeClass
 	public static void beforeClass() throws IOException {
-		loader = new TemplateLoader("src/test/files/templates.txt", "rule_codes", "response");
+		loader = new TemplateLoader("src/test/files/templates.txt", "rule_names", "response");
 	}
 
 	@Test
@@ -30,7 +30,7 @@ public class TemplateLoaderTestCase {
 
 		Template template1 = templates.get(0);
 
-		assertEquals("Network Control", template1.getName());
+		assertEquals("Network Control", template1.getLabel());
 
 		assertEquals(2, template1.getFields().size());
 		assertEquals("0810", template1.getFields().get("0"));

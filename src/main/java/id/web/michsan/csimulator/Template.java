@@ -10,19 +10,19 @@ import java.util.Properties;
  */
 public interface Template {
 	/**
-	 * Template code forbid whitespace character. It returns down_payment instead of payment
-	 * @return Code which is has no space
-	 */
-	public String getCode();
-
-	/**
-	 * This template human friendly name
-	 * @return Human friendly name
+	 * To get template's name without whitespace character. E.g. "down_payment" instead of "down payment"
+	 * @return Template name
 	 */
 	public String getName();
 
 	/**
-	 * Its fields
+	 * To get template's human friendly name
+	 * @return Human friendly name
+	 */
+	public String getLabel();
+
+	/**
+	 * To get template's list of field-value
 	 * @return Fields
 	 */
 	public Map<String, String> getFields();

@@ -105,7 +105,7 @@ public class StringHelper {
 	}
 
 	/**
-	 * Giving quote into a string; e.g. "hello" will be "'hello'"
+	 * Giving quote into a string. E.g. "hello" will be "'hello'"
 	 * @param string Input string
 	 * @return Quoted string
 	 */
