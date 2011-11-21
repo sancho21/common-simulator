@@ -36,6 +36,8 @@ public class ResponseTemplateTestCase {
 	public void shouldMatch() {
 		// Given
 		Map<String, String> templateFields = new HashMap<String, String>();
+		templateFields.put("32", "Dummy hello 123");
+
 		ResponseTemplate template =
 			new ResponseTemplate("aRule", "Desc", templateFields, "0==\"0200\" && 5==\"keren\"");
 
@@ -310,5 +312,12 @@ public class ResponseTemplateTestCase {
 
 		// Then
 		assertEquals("Naomi Sach is cool! ", responseFields.get("RX@F48"));
+	}
+
+	@Test(expected = InvalidMessageFormatException.class)
+	public void shouldTellForMissingDetails() throws Exception {
+		ResponseTemplate.convert(new TemplateLoader(
+				"src/test/files/missing-templates.txt", "rule_names",
+				"response").load());
 	}
 }

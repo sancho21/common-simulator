@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Basic implementation of a Processor
+ *
  * @author <a href="mailto:ichsan@gmail.com">Muhammad Ichsan</a>
  * @since 1.0.1
  */
@@ -99,8 +100,11 @@ public class BaseProcessor implements Processor {
 	/**
 	 * This is called when an unmatched message has come. Current implementation
 	 * only prints when the message come and what are its field contents.
-	 * @param requestFields Fields of the request message
-	 * @param receiveDate Date when the message is received
+	 *
+	 * @param requestFields
+	 *            Fields of the request message
+	 * @param receiveDate
+	 *            Date when the message is received
 	 */
 	protected void unmatchedMessageReceived(Map<String, String> requestFields,
 			Date receiveDate) {
@@ -112,9 +116,13 @@ public class BaseProcessor implements Processor {
 	 * This is called when a matched message is received. Current implementation
 	 * only prints when the message come, what are its field contents and also
 	 * the rule which matches.
-	 * @param requestFields Fields of the request message
-	 * @param receiveDate Date when the message is received
-	 * @param template Response template which matches
+	 *
+	 * @param requestFields
+	 *            Fields of the request message
+	 * @param receiveDate
+	 *            Date when the message is received
+	 * @param template
+	 *            Response template which matches
 	 */
 	protected void matchedMessageReceived(Map<String, String> requestFields,
 			Date receiveDate, ResponseTemplate template) {
@@ -128,7 +136,9 @@ public class BaseProcessor implements Processor {
 	 * This is called when a response message is sent back to the requester.
 	 * Current implementation only prints when the message is sent and what are
 	 * its field contents.
-	 * @param responseFields Fields of the response message
+	 *
+	 * @param responseFields
+	 *            Fields of the response message
 	 */
 	protected void replySent(Map<String, String> responseFields) {
 		String replyDate = dateFormat.format(new Date());
@@ -161,9 +171,12 @@ public class BaseProcessor implements Processor {
 
 	/**
 	 * This is called when a request message is rendered. This is only for
-	 *  information reason.
-	 * @param ruleNameOrCode Rule name the request message belongs to
-	 * @param requestFields Rendered request fields
+	 * information reason.
+	 *
+	 * @param ruleNameOrCode
+	 *            Rule name the request message belongs to
+	 * @param requestFields
+	 *            Rendered request fields
 	 */
 	protected void requestSent(String ruleNameOrCode, Map<String, String> requestFields) {
 		System.out.println("Sending " + q(ruleNameOrCode) + " on " + dateFormat.format(new Date()));
@@ -176,6 +189,7 @@ public class BaseProcessor implements Processor {
 
 	/**
 	 * Load resolver from runtime
+	 *
 	 * @return Field value resolver
 	 */
 	private static Resolver loadResolver() {
@@ -230,7 +244,9 @@ public class BaseProcessor implements Processor {
 
 	/**
 	 * Set pattern of date format of information when a message is processed.
-	 * @param pattern Date pattern as in {@link SimpleDateFormat}.
+	 *
+	 * @param pattern
+	 *            Date pattern as in {@link SimpleDateFormat}.
 	 */
 	public void setDateFormatPattern(String pattern) {
 		this.dateFormat = FastDateFormat.getInstance(pattern);
@@ -238,7 +254,9 @@ public class BaseProcessor implements Processor {
 
 	/**
 	 * Global response delay
-	 * @param responseDelay Delay in milliseconds
+	 *
+	 * @param responseDelay
+	 *            Delay in milliseconds
 	 */
 	public void setResponseDelay(long responseDelay) {
 		this.responseDelay = responseDelay;

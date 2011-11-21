@@ -12,6 +12,7 @@ import java.util.Properties;
 
 /**
  * Load templates from properties file. The important keys are rule_names
+ *
  * @author <a href="mailto:ichsan@gmail.com">Muhammad Ichsan</a>
  * @since 1.0.1
  */
@@ -23,25 +24,37 @@ public class TemplateLoader {
 
 	/**
 	 * Constructor
-	 * @param props Properties containing templates
-	 * @param listingField Field of properties which contains the template names
-	 * @param fieldIdentifier Field identifier, e.g. response in rule.echo.response.39=00
+	 *
+	 * @param props
+	 *            Properties containing templates
+	 * @param listingField
+	 *            Field of properties which contains the template names
+	 * @param fieldIdentifier
+	 *            Field identifier, e.g. response in rule.echo.response.39=00
 	 */
-	public TemplateLoader(Properties props, String listingField, String fieldIdentifier) {
+	public TemplateLoader(Properties props, String listingField,
+			String fieldIdentifier) {
 		this.props = props;
 		this.listingField = listingField;
 		this.fieldIdentifier = fieldIdentifier;
 	}
 
 	/**
-	 * Load all templates form properties file
-	 * @param templateCollectionFile Properties file containing templates
-	 * @param listingField Field of properties which contains the template names
-	 * @param fieldIdentifier Field identifier, e.g. response in rule.echo.response.39=00
-	 * @throws IOException Failed to read file
+	 * Load all templates form properties file. The format is
+	 * rule.&lt;rule_name&gt;.&lt;field_identifier&gt;.&lt;field&gt=&lt;the value&gt;
+	 *
+	 * @param templateCollectionFile
+	 *            Properties file containing templates
+	 * @param listingField
+	 *            Field of properties which contains the template names
+	 * @param fieldIdentifier
+	 *            Field identifier, e.g. response in rule.echo.response.39=00.
+	 * @throws IOException
+	 *             Failed to read file
 	 */
-	public TemplateLoader(String templateCollectionFile, String listingField, String fieldIdentifier) throws IOException {
-		this.props = new Properties();
+	public TemplateLoader(String templateCollectionFile, String listingField,
+			String fieldIdentifier) throws IOException {
+		props = new Properties();
 		InputStream in = new FileInputStream(templateCollectionFile);
 		props.load(in);
 		in.close();
@@ -52,6 +65,7 @@ public class TemplateLoader {
 
 	/**
 	 * Load all templates from properties
+	 *
 	 * @return List of templates
 	 */
 	public List<Template> load() {

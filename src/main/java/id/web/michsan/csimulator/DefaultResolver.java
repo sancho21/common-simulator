@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Default resolver which can handle &lt;date:HHmmss&gt;, &lt;counter&gt;,
  * &lt;rotate|value 1|value 2&gt;, &lt;random|value 1|value 2&gt;
+ *
  * @author <a href="mailto:ichsan@gmail.com">Muhammad Ichsan</a>
  * @since 1.0.1
  */

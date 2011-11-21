@@ -25,6 +25,7 @@ import org.xml.sax.SAXException;
 
 /**
  * Packager composes fields into a long string
+ *
  * @author <a href="mailto:ichsan@gmail.com">Muhammad Ichsan</a>
  * @since 1.0.0
  */
@@ -35,9 +36,13 @@ public class Packager {
 
 	/**
 	 * Constructor
-	 * @param code Packager unique code
-	 * @param fields Packager's fields
-	 * @throws RuntimeException If fields is overlapping with each other
+	 *
+	 * @param code
+	 *            Packager unique code
+	 * @param fields
+	 *            Packager's fields
+	 * @throws RuntimeException
+	 *             If fields is overlapping with each other
 	 */
 	public Packager(String code, List<Field> fields) throws RuntimeException {
 		this.code = code;
@@ -49,10 +54,15 @@ public class Packager {
 
 	/**
 	 * Constructor
-	 * @param code Packager unique code
-	 * @param packagerLocation XML file which defines packager fields
-	 * @throws SAXException If failed to load file
-	 * @throws Exception Other exceptions
+	 *
+	 * @param code
+	 *            Packager unique code
+	 * @param packagerLocation
+	 *            XML file which defines packager fields
+	 * @throws SAXException
+	 *             If failed to load file
+	 * @throws Exception
+	 *             Other exceptions
 	 */
 	public Packager(String code, String packagerLocation) throws SAXException, Exception  {
 		this(code, loadFields(packagerLocation));
@@ -93,9 +103,11 @@ public class Packager {
 	}
 
 	/**
-	 * Pack message which values are residing in a value holder. Values which are
-	 * not registered in the packager fields will be ignored.
-	 * @param valueHolder A holder which contains key-to-value list
+	 * Pack message which values are residing in a value holder. Values which
+	 * are not registered in the packager fields will be ignored.
+	 *
+	 * @param valueHolder
+	 *            A holder which contains key-to-value list
 	 * @return Packed message
 	 */
 	public String pack(Map<String, String> valueHolder) {
@@ -115,6 +127,7 @@ public class Packager {
 
 	/**
 	 * Render field values
+	 *
 	 * @param fieldValues
 	 * @return Rendered field values
 	 */
@@ -135,8 +148,11 @@ public class Packager {
 
 	/**
 	 * Unpack the packed message
-	 * @param packedMessage Packed message
-	 * @param valueHolder Holder to put unpacked values into
+	 *
+	 * @param packedMessage
+	 *            Packed message
+	 * @param valueHolder
+	 *            Holder to put unpacked values into
 	 */
 	public void unpack(String packedMessage, Map<String, String> valueHolder) {
 		int begin = 0, end;

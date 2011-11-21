@@ -2,6 +2,7 @@ package id.web.michsan.csimulator;
 
 /**
  * Representation of message field
+ *
  * @author <a href="mailto:ichsan@gmail.com">Muhammad Ichsan</a>
  * @since 1.0.0
  */

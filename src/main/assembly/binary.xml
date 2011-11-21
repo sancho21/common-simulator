@@ -16,6 +16,14 @@
 			</includes>
 		</fileSet>
 		<fileSet>
+			<directory>${project.basedir}/src/main/assembly</directory>
+			<outputDirectory>/</outputDirectory>
+			<includes>
+				<include>convert</include>
+			</includes>
+			<fileMode>755</fileMode>
+		</fileSet>
+		<fileSet>
 			<directory>${project.basedir}/target/site/apidocs</directory>
 			<outputDirectory>/apidocs</outputDirectory>
 		</fileSet>

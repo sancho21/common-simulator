@@ -1,5 +1,7 @@
 package id.web.michsan.csimulator;
 
+import id.web.michsan.csimulator.util.StringHelper;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,6 +11,7 @@ import java.util.Properties;
 
 /**
  * Request template
+ *
  * @author <a href="mailto:ichsan@gmail.com">Muhammad Ichsan</a>
  * @since 1.0.1
  */
@@ -25,6 +28,11 @@ public class RequestTemplate implements Template {
 	}
 
 	public RequestTemplate(String name, String label, Map<String, String> fields) {
+		if (StringHelper.isEmpty(name, true))
+			throw new InvalidMessageFormatException(name, "Name is undefined");
+		if (fields.isEmpty())
+			throw new InvalidMessageFormatException(name, "No fields defined");
+
 		this.name = name;
 		this.label = label;
 		this.fields = fields;
@@ -32,6 +40,7 @@ public class RequestTemplate implements Template {
 
 	/**
 	 * Render this template into real message
+	 *
 	 * @return Rendered message fields
 	 */
 	public Map<String, String> render() {

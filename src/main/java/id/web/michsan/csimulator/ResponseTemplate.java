@@ -3,6 +3,7 @@ package id.web.michsan.csimulator;
 import static id.web.michsan.csimulator.util.StringHelper.pad;
 import static id.web.michsan.csimulator.util.StringHelper.q;
 import id.web.michsan.csimulator.util.ConditionChecker;
+import id.web.michsan.csimulator.util.StringHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,6 +16,7 @@ import java.util.regex.Pattern;
 
 /**
  * Template for response which also can compose response message
+ *
  * @author <a href="mailto:ichsan@gmail.com">Muhammad Ichsan</a>
  * @since 1.0.1
  */
@@ -37,7 +39,9 @@ public class ResponseTemplate implements Template {
 	/**
 	 * Create response template from template. The template must have properties
 	 * named 'condition'
-	 * @param template Input template
+	 *
+	 * @param template
+	 *            Input template
 	 */
 	public ResponseTemplate(Template template) {
 		this(template.getName(), template.getLabel(), template.getFields(),
@@ -48,6 +52,13 @@ public class ResponseTemplate implements Template {
 
 	public ResponseTemplate(String name, String label,
 			Map<String, String> fields, String condition) {
+		if (StringHelper.isEmpty(name, true))
+			throw new InvalidMessageFormatException(name, "Name is undefined");
+		if (StringHelper.isEmpty(condition, true))
+			throw new InvalidMessageFormatException(name, "Condition is undefined");
+		if (fields.isEmpty())
+			throw new InvalidMessageFormatException(name, "No field is defined");
+
 		this.name = name;
 		this.label = label;
 		this.fields = fields;
@@ -56,7 +67,9 @@ public class ResponseTemplate implements Template {
 
 	/**
 	 * Check if the fields match with this template
-	 * @param fields Request fields
+	 *
+	 * @param fields
+	 *            Request fields
 	 * @return result
 	 */
 	public boolean match(Map<String, String> fields) {
@@ -65,7 +78,9 @@ public class ResponseTemplate implements Template {
 
 	/**
 	 * Create response fields for request fields
-	 * @param requestFields The fields and values of request message
+	 *
+	 * @param requestFields
+	 *            The fields and values of request message
 	 * @return Response fields
 	 */
 	public Map<String, String> createResponse(Map<String, String> requestFields) {

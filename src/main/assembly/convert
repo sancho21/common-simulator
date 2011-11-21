@@ -1,0 +1,128 @@
+#!/usr/bin/perl
+# 
+# Utility to convert old format message into latest format message
+#
+# @author: Muhammad Ichsan <ichsan@gmail.com>
+# @date: June 6, 2011
+#
+
+if (@ARGV != 1) {
+	print "Usage: convert <message file>\n";
+	exit;
+}
+
+$file = $ARGV[0];
+
+open(HANDLE, $file) || die("Could not open file $file!\n");
+while(<HANDLE>) {
+	my $line = $_;
+	$line =~ s/\r//g; # Removing ^M
+	$line =~ s/\n//g; # Removing new line
+
+	$line = &for_isosim($line); 
+	$line = &label($line);
+	$line = &stx($line); 
+	print "$line\n";
+}
+close(HANDLE);
+
+
+
+# Functions #############################
+sub for_isosim {
+	my $line = $_[0];
+	$line = &mino2netty($line);
+	$line;
+}
+
+# Change Mino codec into Netty codec
+sub mino2netty {
+	my $line = $_[0];
+	my($key, $value) = kv($line);
+
+	if ($key eq 'protocol_codec') {
+		$value =~ s/mino\.codec/codec\.frame/g;
+		$line = "$key=$value";
+	}
+
+	$line;
+}
+
+# Change name into label
+sub label {
+	my $line = $_[0];
+	my($key, $value) = kv($line);
+
+	if ($key =~ m/rule\.\w+\.name/) {
+		$key =~ s/name$/label/g;
+		$line = "$key=$value";
+	}
+
+	$line;
+}
+
+# Update syntax into 3.x
+sub stx {
+	my $line = $_[0];
+	my($key, $value) = kv($line);
+
+	if ($key =~ m/condition$/ and !($value =~ m/"+/)) {
+		$value = replace_stx($value);
+		$line = "$key=$value";
+	}
+
+	$line;	
+}
+
+sub replace_stx {
+	my $value = $_[0];
+	my @splits = split('&&', $value);
+
+	my @splits_new;
+	my $and;
+	foreach $and (@splits) {
+		$and = &trim($and);
+		my @splits2 = split('\|\|', $and);
+
+		my $or;
+		my @splits2_new;
+		foreach $or (@splits2) {
+			push(@splits2_new, atom_stx($or));
+		}
+		
+		push(@splits_new, join(' || ', @splits2_new));	
+	}
+
+	join(' && ', @splits_new);
+}
+
+sub atom_stx {
+	my $atom = $_[0];
+	my @splits = split(':', $atom, 2);
+	my $key = @splits[0];
+	my $value = @splits[1];
+
+	my $lchar = substr($value, -1, 1);
+	if ($lchar eq ')') {
+		$value = substr($value, 0, length($value) - 1);
+		"$key == \"$value\")";
+	} else {
+		"$key == \"$value\"";
+	}
+}
+
+sub trim($) {
+	my $string = shift;
+	$string =~ s/^\s+//;
+	$string =~ s/\s+$//;
+	return $string;
+}
+
+sub kv {
+	my $line = $_[0];
+	my @splits = split('=', $line);
+	my $key = @splits[0];	
+	my $value = @splits[1];
+
+	$key, $value;	
+}

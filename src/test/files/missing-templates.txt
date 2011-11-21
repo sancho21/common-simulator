@@ -1,0 +1,17 @@
+# Some template definition is not found
+
+rule_names = network, update_limit, reversal, not_found_definition
+
+rule.network.condition = 0 == "0800" && 11 == "123456"
+rule.network.label = Network Control
+rule.network.verbose = false
+rule.network.response.0 = 0810
+rule.network.response.39 = 00
+
+rule.update_limit.condition = 0:0200
+rule.update_limit.response.0 = 0210
+rule.update_limit.response.11 = <echo>
+
+rule.reversal.condition = 0:0400
+rule.reversal.response.0 = 0210
+rule.reversal.response.11 = suka2

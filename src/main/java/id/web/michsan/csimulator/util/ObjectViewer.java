@@ -11,6 +11,7 @@ import java.util.Map;
 
 /**
  * To view object in string representation
+ *
  * @author <a href="mailto:ichsan@gmail.com">Muhammad Ichsan</a>
  * @since 1.0.0
  */
@@ -19,8 +20,11 @@ public class ObjectViewer {
 
 	/**
 	 * View message (fields) based on its packager fields
-	 * @param message The message (fields) to print
-	 * @param packager The packager
+	 *
+	 * @param message
+	 *            The message (fields) to print
+	 * @param packager
+	 *            The packager
 	 * @return String representation
 	 */
 	public static String view(Map<String, String> message, Packager packager) {
@@ -42,8 +46,11 @@ public class ObjectViewer {
 	/**
 	 * View message based on its own fields. The order of string representation
 	 * is decided by the comparator
-	 * @param message The message (fields) to print
-	 * @param comparator Comparator which order the message fields
+	 *
+	 * @param message
+	 *            The message (fields) to print
+	 * @param comparator
+	 *            Comparator which order the message fields
 	 * @return String representation
 	 */
 	public static String view(Map<String, String> message,
@@ -54,9 +61,13 @@ public class ObjectViewer {
 	/**
 	 * View message based on its own fields. The order of string representation
 	 * is decided by the comparator
-	 * @param message The message (fields) to print
-	 * @param comparator Comparator which order the message fields
-	 * @param fieldNameReplaces Names and corresponding replacement for the fields.
+	 *
+	 * @param message
+	 *            The message (fields) to print
+	 * @param comparator
+	 *            Comparator which order the message fields
+	 * @param fieldNameReplaces
+	 *            Names and corresponding replacement for the fields.
 	 * @return String representation
 	 */
 	public static String view(Map<String, String> message,

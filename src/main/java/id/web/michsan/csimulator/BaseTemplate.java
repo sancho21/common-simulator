@@ -6,6 +6,7 @@ import java.util.Properties;
 
 /**
  * Basic template which can be a response template or a request template
+ *
  * @author <a href="mailto:ichsan@gmail.com">Muhammad Ichsan</a>
  *
  */
@@ -17,9 +18,12 @@ public class BaseTemplate implements Template {
 
 	/**
 	 * Create a base template
-	 * @param name Unique identifier of the template which has no empty chars.
-	 * The value should simple; e.g. bill_payment
-	 * @param fields List of pairs of field name and value
+	 *
+	 * @param name
+	 *            Unique identifier of the template which has no empty chars.
+	 *            The value should simple; e.g. bill_payment
+	 * @param fields
+	 *            List of pairs of field name and value
 	 */
 	public BaseTemplate(String name, Map<String, String> fields) {
 		this.name = name;
@@ -40,7 +44,9 @@ public class BaseTemplate implements Template {
 
 	/**
 	 * Set properties that apply to this template; e.g. response_delay
-	 * @param properties Properties to set
+	 *
+	 * @param properties
+	 *            Properties to set
 	 */
 	public void setProperties(Properties properties) {
 		this.properties = properties;
@@ -52,7 +58,9 @@ public class BaseTemplate implements Template {
 
 	/**
 	 * Set a human friendly name to this template; e.g. Bill Payment
-	 * @param label Human friendly name of the template
+	 *
+	 * @param label
+	 *            Human friendly name of the template
 	 */
 	public void setLabel(String label) {
 		this.label = label;

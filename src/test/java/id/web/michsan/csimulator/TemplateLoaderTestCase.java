@@ -37,4 +37,5 @@ public class TemplateLoaderTestCase {
 		assertEquals("00", template1.getFields().get("39"));
 		assertEquals("false", template1.getProperties().get("verbose"));
 	}
+
 }
