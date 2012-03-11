@@ -314,10 +314,29 @@ public class ResponseTemplateTestCase {
 		assertEquals("Naomi Sach is cool! ", responseFields.get("RX@F48"));
 	}
 
-	@Test(expected = InvalidMessageFormatException.class)
+	@Test
 	public void shouldTellForMissingDetails() throws Exception {
-		ResponseTemplate.convert(new TemplateLoader(
-				"src/test/files/missing-templates.txt", "rule_names",
-				"response").load());
+		try {
+			ResponseTemplate.convert(new TemplateLoader(
+					"src/test/files/missing-templates.txt", "rule_names",
+					"response").load());
+			assertTrue(false);
+		} catch (InvalidMessageFormatException e) {
+			assertEquals(
+					"Invalid message format for rule 'not_found_definition'. Condition is undefined!",
+					e.getMessage());
+		}
+
+		try {
+			ResponseTemplate.convert(new TemplateLoader(
+					"src/test/files/incomplete-templates.txt", "rule_names",
+					"response").load());
+			assertTrue(false);
+		} catch (InvalidMessageFormatException e) {
+			assertEquals(
+					"Invalid message format for rule 'network'. No field is defined!",
+					e.getMessage());
+		}
 	}
+
 }
