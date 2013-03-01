@@ -1,11 +1,11 @@
 package id.web.michsan.csimulator.process;
 
-import static org.easymock.EasyMock.anyObject;
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import id.web.michsan.csimulator.ResponseTemplate;
 
 import java.util.ArrayList;
@@ -16,7 +16,6 @@ import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
-
 /**
  *
  * @author <a href="mailto:ichsan@gmail.com">Muhammad Ichsan</a>
@@ -55,7 +54,7 @@ public class BaseProcessor_process_TestCase {
 			}
 		};
 
-		responseSender = createMock(Sender.class);
+		responseSender = mock(Sender.class);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -70,10 +69,6 @@ public class BaseProcessor_process_TestCase {
 		templates.add(new ResponseTemplate("c1", "n1", fields, "fieldOne==\"Hello\""));
 		templates.add(new ResponseTemplate("c2", "n2", fields, "fieldOne==\"Good\""));
 
-		// With this expectation
-		responseSender.send(anyObject(Map.class));
-		replay(responseSender);
-
 		// When this matched message comes
 		Map<String, String> incomingMessageFields = new HashMap<String, String>();
 		incomingMessageFields.put("fieldOne", "Hello");
@@ -84,8 +79,9 @@ public class BaseProcessor_process_TestCase {
 		// Then we expect that matched information is shown
 		assertTrue(matchedReceived);
 		assertFalse(unmatchedReceived);
+
 		// And sender is used to send
-		verify(responseSender);
+		verify(responseSender).send(any(Map.class));
 	}
 
 	@Test
@@ -99,9 +95,6 @@ public class BaseProcessor_process_TestCase {
 		templates.add(new ResponseTemplate("c1", "n1", fields, "fieldOne==\"Guten\""));
 		templates.add(new ResponseTemplate("c2", "n2", fields, "fieldOne==\"Baik\""));
 
-		// With this expectation (no call to response sender)
-		replay(responseSender);
-
 		// When this unmatched message comes
 		Map<String, String> incomingMessageFields = new HashMap<String, String>();
 		incomingMessageFields.put("fieldOne", "Hello");
@@ -111,8 +104,9 @@ public class BaseProcessor_process_TestCase {
 		// Then we expect that matched information is shown
 		assertTrue(unmatchedReceived);
 		assertFalse(matchedReceived);
-		// And sender is used to send
-		verify(responseSender);
+
+		// And sender is never used to send
+		verifyZeroInteractions(responseSender);
 	}
 
 	@Test

@@ -1,9 +1,8 @@
 package id.web.michsan.csimulator.process;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expectLastCall;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import id.web.michsan.csimulator.RequestTemplate;
 
 import java.util.HashMap;
@@ -11,7 +10,6 @@ import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
-
 /**
  *
  * @author <a href="mailto:ichsan@gmail.com">Muhammad Ichsan</a>
@@ -24,7 +22,7 @@ public class BaseProcessor_missingResolverConfigFile_TestCase {
 	@Before
 	public void before() throws Exception {
 		processor = new BaseProcessor();
-		sender = createMock(Sender.class);
+		sender = mock(Sender.class);
 	}
 
 	@Test
@@ -37,18 +35,14 @@ public class BaseProcessor_missingResolverConfigFile_TestCase {
 		fields.put("F75", "<special>"); // this will not be modified by DEFAULT resolver
 		RequestTemplate template = new RequestTemplate("echo", "Echo", fields);
 
-		// And expect we receive correct format
-		Map<String, String> expectedRenderedFields = new HashMap<String, String>();
-		expectedRenderedFields.put("F65", "other value");
-		expectedRenderedFields.put("F75", "<special>"); // stay the same.
-		sender.send(expectedRenderedFields);
-		expectLastCall().once();
-		replay(sender);
-
 		// When we send the template
 		processor.processRequest(template, sender);
 
-		// We should meet the expectation
-		verify(sender);
+		// Then we'll receive correct format
+		Map<String, String> expectedRenderedFields = new HashMap<String, String>();
+		expectedRenderedFields.put("F65", "other value");
+		expectedRenderedFields.put("F75", "<special>"); // stay the same.
+
+		verify(sender, times(1)).send(expectedRenderedFields);
 	}
 }

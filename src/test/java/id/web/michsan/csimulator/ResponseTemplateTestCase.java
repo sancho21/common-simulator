@@ -1,12 +1,12 @@
 package id.web.michsan.csimulator;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -187,11 +187,10 @@ public class ResponseTemplateTestCase {
 			new ResponseTemplate("aRule", "Desc", templateFields, "unused");
 
 		// And expectation that the resolver react to the value
-		resolver = createMock(Resolver.class);
+		resolver = mock(Resolver.class);
 		template.setResolver(resolver);
-		expect(resolver.resolve("Three One")).andReturn("Three One");
-		expect(resolver.resolve("<a-trick>")).andReturn("Wonderful trick!");
-		replay(resolver);
+		when(resolver.resolve("Three One")).thenReturn("Three One");
+		when(resolver.resolve("<a-trick>")).thenReturn("Wonderful trick!");
 
 		Map<String, String> requestFields = new HashMap<String, String>();
 		requestFields.put("32", "Suka2");
@@ -215,10 +214,9 @@ public class ResponseTemplateTestCase {
 			new ResponseTemplate("aRule", "Desc", fields, "unused");
 
 		// And: a template resolver
-		resolver = createMock(Resolver.class);
+		resolver = mock(Resolver.class);
 		template.setResolver(resolver);
-		expect(resolver.resolve("<counting>")).andReturn("500");
-		replay(resolver);
+		when(resolver.resolve("<counting>")).thenReturn("500");
 
 		// When: we create a response
 		Map<String, String> responseFields = template.createResponse(new HashMap<String, String>());
@@ -228,7 +226,7 @@ public class ResponseTemplateTestCase {
 		assertEquals("500", responseFields.get("F65"));
 
 		// And: resolver is just called once
-		verify(resolver);
+		verify(resolver, times(1)).resolve("<counting>");
 	}
 
 	@Test
@@ -241,11 +239,11 @@ public class ResponseTemplateTestCase {
 			new ResponseTemplate("aRule", "Desc", fields, "unused");
 
 		// And: a template resolver
-		resolver = createMock(Resolver.class);
+		resolver = mock(Resolver.class);
 		template.setResolver(resolver);
-		expect(resolver.resolve("<counting>")).andReturn("500");
-		expect(resolver.resolve("<counting>")).andReturn("550");
-		replay(resolver);
+		when(resolver.resolve("<counting>"))
+			.thenReturn("500")
+			.thenReturn("550");
 
 		// When:we create a response
 		Map<String, String> responseFields1 = template.createResponse(new HashMap<String, String>());
@@ -255,8 +253,8 @@ public class ResponseTemplateTestCase {
 		assertEquals("500", responseFields1.get("F55"));
 		assertEquals("550", responseFields2.get("F65"));
 
-		// And: resolver is just called once
-		verify(resolver);
+		// And: resolver is called twice
+		verify(resolver, times(2)).resolve("<counting>");
 	}
 
 	@Test

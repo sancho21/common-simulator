@@ -1,19 +1,18 @@
 package id.web.michsan.csimulator;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
-
 /**
- *
+ *m
  * @author <a href="mailto:ichsan@gmail.com">Muhammad Ichsan</a>
  *
  */
@@ -22,7 +21,7 @@ public class RequestTemplateTestCase {
 
 	@Before
 	public void beforeClass() {
-		resolver = createMock(Resolver.class);
+		resolver = mock(Resolver.class);
 	}
 
 	@Test
@@ -34,8 +33,7 @@ public class RequestTemplateTestCase {
 
 		// And: a template resolver
 		template.setResolver(resolver);
-		expect(resolver.resolve("<counting>")).andReturn("1400");
-		replay(resolver);
+		when(resolver.resolve("<counting>")).thenReturn("1400");
 
 		// When: we render the template
 		Map<String, String> renderedFields = template.render();
@@ -54,8 +52,7 @@ public class RequestTemplateTestCase {
 
 		// And: a template resolver
 		template.setResolver(resolver);
-		expect(resolver.resolve("<counting>")).andReturn("500");
-		replay(resolver);
+		when(resolver.resolve("<counting>")).thenReturn("500");
 
 		// When: we render the template
 		Map<String, String> renderedFields = template.render();
@@ -65,7 +62,7 @@ public class RequestTemplateTestCase {
 		assertEquals("500", renderedFields.get("F65"));
 
 		// And: resolver is just called once
-		verify(resolver);
+		verify(resolver, times(1)).resolve("<counting>");
 	}
 
 	@Test
@@ -78,9 +75,9 @@ public class RequestTemplateTestCase {
 
 		// And: a template resolver
 		template.setResolver(resolver);
-		expect(resolver.resolve("<counting>")).andReturn("500");
-		expect(resolver.resolve("<counting>")).andReturn("550");
-		replay(resolver);
+		when(resolver.resolve("<counting>"))
+			.thenReturn("500")
+			.thenReturn("550");
 
 		// When: we render the template twice
 		Map<String, String> renderedFields1 = template.render();
@@ -90,7 +87,7 @@ public class RequestTemplateTestCase {
 		assertEquals("500", renderedFields1.get("F55"));
 		assertEquals("550", renderedFields2.get("F65"));
 
-		// And: resolver is just called once
-		verify(resolver);
+		// And: resolver is called twice
+		verify(resolver, times(2)).resolve("<counting>");
 	}
 }

@@ -1,9 +1,8 @@
 package id.web.michsan.csimulator.process;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.expectLastCall;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import id.web.michsan.csimulator.RequestTemplate;
 
 import java.text.SimpleDateFormat;
@@ -13,7 +12,6 @@ import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
-
 /**
  *
  * @author <a href="mailto:ichsan@gmail.com">Muhammad Ichsan</a>
@@ -26,7 +24,7 @@ public class BaseProcessor_processRequest_TestCase {
 	@Before
 	public void before() {
 		processor = new BaseProcessor();
-		sender = createMock(Sender.class);
+		sender = mock(Sender.class);
 	}
 
 	@Test
@@ -39,18 +37,17 @@ public class BaseProcessor_processRequest_TestCase {
 		RequestTemplate template = new RequestTemplate("echo", "Echo", fields);
 
 		// And expect we receive correct format
-		Map<String, String> expectedRenderedFields = new HashMap<String, String>();
-		expectedRenderedFields.put("F55", new SimpleDateFormat("dd MMM yyyy").format(new Date()));
-		expectedRenderedFields.put("F65", "other value");
-		expectedRenderedFields.put("F75", "1");
-		sender.send(expectedRenderedFields);
-		expectLastCall().once();
-		replay(sender);
+
 
 		// When we send the template
 		processor.processRequest(template, sender);
 
-		// We should meet the expectation
-		verify(sender);
+		// We should receive correct format
+		Map<String, String> expectedRenderedFields = new HashMap<String, String>();
+		expectedRenderedFields.put("F55", new SimpleDateFormat("dd MMM yyyy").format(new Date()));
+		expectedRenderedFields.put("F65", "other value");
+		expectedRenderedFields.put("F75", "1");
+
+		verify(sender, times(1)).send(expectedRenderedFields);
 	}
 }
