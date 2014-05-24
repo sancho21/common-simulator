@@ -1,18 +1,20 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>id.web.michsan</groupId>
+	<groupId>id.web.michsan.csimulator</groupId>
 	<artifactId>common-simulator</artifactId>
 	<version>3.2.0</version>
 	<packaging>bundle</packaging>
+
 	<name>Common Simulator</name>
 	<description>Simulator library which simulates remote peers e.g. using ISO-8583 protocol</description>
-	<url>http://michsan.web.id/common-simulator</url>
+	<url>https://github.com/sancho21/common-simulator</url>
 
 	<licenses>
 		<license>
 			<name>LGPL</name>
 			<url>http://www.gnu.org/licenses/lgpl-2.1.txt</url>
+			<distribution>repo</distribution>
 		</license>
 	</licenses>
 
@@ -20,21 +22,24 @@
 		<developer>
 			<name>Muhammad Ichsan</name>
 			<email>ichsan@gmail.com</email>
+			<url>http://www.michsan.web.id</url>
+			<timezone>+8</timezone>
 		</developer>
 	</developers>
 
 	<scm>
-		<connection>scm:git:git://commonsimulator.git.sourceforge.net/gitroot/commonsimulator/commonsimulator</connection>
-		<developerConnection>scm:git:ssh://commonsimulator.git.sourceforge.net/gitroot/commonsimulator/commonsimulator</developerConnection>
+		<url>https://github.com/sancho21/common-simulator</url>
+		<connection>scm:git:https://github.com/sancho21/common-simulator.git</connection>
+		<developerConnection>scm:git:https://github.com/sancho21/common-simulator.git</developerConnection>
 	</scm>
 
 	<properties>
-		<slf4j.version>1.7.2</slf4j.version>
-		<log4j.version>1.2.17</log4j.version>
-		<junit.version>4.11</junit.version>
-		<mockito.version>1.9.5</mockito.version>
+		<slf4j.version>(1.7,2)</slf4j.version>
+		<log4j.version>(1.2,2)</log4j.version>
 		<antlr.version>3.5</antlr.version>
-		<commons-lang3.version>3.1</commons-lang3.version>
+		<commons-lang3.version>[3.1,4)</commons-lang3.version>
+		<junit.version>[4.11,5)</junit.version>
+		<mockito.version>(1.9,2)</mockito.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -95,7 +100,7 @@
 					<target>1.5</target>
 				</configuration>
 			</plugin>
-			<!-- Skip stresstest -->
+			<!-- Skip stress tests -->
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.10</version>
@@ -105,7 +110,7 @@
 					</excludes>
 				</configuration>
 			</plugin>
-			<!-- To compile Antlr file -->
+			<!-- To compile Antlr files -->
 			<plugin>
 				<groupId>org.antlr</groupId>
 				<artifactId>antlr3-maven-plugin</artifactId>
@@ -118,7 +123,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- osgi bundle generation -->
+			<!-- OSGi bundle generation -->
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
@@ -139,13 +144,39 @@
 
 	<profiles>
 		<profile>
+			<id>release-sign-artifacts</id>
+			<activation>
+				<property>
+					<name>performRelease</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.5</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
 			<id>production</id>
 			<build>
 				<plugins>
 					<!-- To add doc into binary release -->
 					<plugin>
 						<artifactId>maven-javadoc-plugin</artifactId>
-						<version>2.7</version>
+						<version>2.9.1</version>
 						<configuration>
 							<show>protected</show>
 							<detectLinks>true</detectLinks>
