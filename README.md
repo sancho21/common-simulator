@@ -32,6 +32,18 @@ public class Handler {
 
 That class is not completed yet and you wish to complete it. So, it can respond and generate messages.
 
+To complete the solution with this library, please use:
+
+`````xml
+	<dependencies>
+		<dependency>
+			<groupId>id.web.michsan.csimulator</groupId>
+			<artifactId>common-simulator</artifactId>
+			<version>3.2.0</version>
+		</dependency>
+	</dependencies>
+`````
+
 Handling incoming requests
 ==========================
 Handling request messages means you need to find response templates which responds to the messages.
