@@ -173,6 +173,12 @@
 					<maxmem>256m</maxmem>
 					<!-- aggregated reports for multi-module projects -->
 					<aggregate>true</aggregate>
+					<instrumentation>
+						<!-- Ignore Antlr generated classes -->
+						<excludes>
+							<exclude>id/web/michsan/csimulator/util/grammar/*.class</exclude>
+						</excludes>
+					</instrumentation>
 				</configuration>
 			</plugin>
 			<plugin>
