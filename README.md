@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/sancho21/common-simulator.svg?branch=master)](https://travis-ci.org/sancho21/common-simulator)
+[![Coverage Status](https://coveralls.io/repos/sancho21/common-simulator/badge.svg?branch=master)](https://coveralls.io/r/sancho21/common-simulator?branch=master)
+
 Introduction
 ============
 Common Simulator is a library to create any simulator which uses field based message such as ISO-8583 message, or properties like message. Once you download common-simulator package, you can start creating a simulator. The main methods in the library are:
